@@ -122,7 +122,8 @@ class AppShareSmart(object):
 def cli():
     if len(sys.argv) > 1:
         if sys.argv[1] == '--version' or sys.argv[1]=='-v':
-            print __version__
+            import vxscreenshots
+            print vxscreenshots.__version__
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = AppShareSmart('Shared on S3')
     app.run()
