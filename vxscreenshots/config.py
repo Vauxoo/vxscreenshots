@@ -40,7 +40,7 @@ def read_config():
                        'vxscreenshots.ini')
     if not isfile(cfg) and not isdir(dirname(cfg)):
         os.makedirs(dirname(cfg))
-        with open(cfg, 'rb') as configfile:
+        with open(cfg, 'a+') as configfile:
             configfile.write(get_template_config(cfg))
     parser = ConfigParser.RawConfigParser()
     parser.read([cfg])
