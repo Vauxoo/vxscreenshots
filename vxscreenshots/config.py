@@ -42,10 +42,10 @@ def read_config():
     rv = {}
     if not isdir(dirname(cfg)):
         makedirs(dirname(cfg))
-        if not isfile(cfg):
-            logging.info('Creating config file %s' % cfg)
-            with open(cfg, 'a+') as configfile:
-                configfile.write(get_template_config(cfg))
+    if not isfile(cfg):
+        logging.info('Creating config file %s' % cfg)
+        with open(cfg, 'a+') as configfile:
+            configfile.write(get_template_config(cfg))
     parser.read([cfg])
     logging.info('Reading config file %s' % cfg)
     for section in parser.sections():
