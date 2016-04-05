@@ -38,14 +38,14 @@ bucket_name={bucket}
 
 def read_config():
     cfg = join(HOME, '.vxscreenshots', 'vxscreenshots.ini')
+    parser = ConfigParser.RawConfigParser()
     rv = {}
     if not isdir(dirname(cfg)):
         makedirs(dirname(cfg))
-        if not os.isfile(cfg):
+        if not isfile(cfg):
             logging.info('Creating config file %s' % cfg)
             with open(cfg, 'a+') as configfile:
                 configfile.write(get_template_config(cfg))
-            parser = ConfigParser.RawConfigParser()
     parser.read([cfg])
     logging.info('Reading config file %s' % cfg)
     for section in parser.sections():
