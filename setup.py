@@ -15,11 +15,10 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 with open('requirements.txt') as req_file:
-    requirements = req_file.readlines()
+    install_requires = [r.strip() for r in req_file.readlines()]
 
-test_requirements = [
-    # TODO: put package test requirements here
-]
+with open('requirements_dev.txt') as req_file:
+    test_requirements = [r.strip() for r in req_file.readlines()]
 
 setup(
     name='vxscreenshots',
@@ -35,7 +34,6 @@ setup(
     package_dir={'vxscreenshots':
                  'vxscreenshots'},
     include_package_data=True,
-    install_requires=requirements,
     license="ISCL",
     zip_safe=False,
     keywords='vxscreenshots',
