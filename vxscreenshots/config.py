@@ -2,7 +2,7 @@
 
 import os
 import ConfigParser
-from os.path import dirname, join, expanduser, isfile
+from os.path import dirname, join, expanduser, isdir, isfile
 HOME = expanduser("~")
 
 
@@ -26,15 +26,19 @@ def get_template_config(cfg):
 database={dirconfig}
 supervised={supervised}
 folder={username}
+bucket_name={bucket}
     '''.format(dbconfig=dirconfig,
                supervised=join(HOME, 'Pictures', 'screenshots'),
-               username=current_user())
+               username=current_user(),
+               bucket='screenshots.yourdomain.com')
     return content
 
 
 def read_config():
-    cfg = os.path.join(HOME, 'vxscreenshots.ini')
-    if not isfile(cfg):
+    cfg = os.path.join(HOME,
+                       '.vxscreenshots',
+                       'vxscreenshots.ini')
+    if not isfile(cfg) and not isdir(dirname(cfg)):
         os.makedirs(dirname(cfg))
         with open(cfg, 'rb') as configfile:
             configfile.write(get_template_config(cfg))
