@@ -12,8 +12,9 @@ import signal
 from os.path import join, dirname
 import sqlite3
 import logging
-from os.path import expanduser
-HOME = expanduser("~")
+from vxscreenshots.config import read_config
+
+config = read_config()
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(message)s',
@@ -29,9 +30,11 @@ class AppShareSmart(object):
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
-        self.db = 'dev.db'  # If dev then local if not on .local
-        self.conn = sqlite3.connect('dev.db')
+        self.db = config.screenshots.database  # If dev then local if not on .local
+        self.conn = sqlite3.connect(self.db)
         self.cursor = self.get_conn()
+        logging.info(self.db)
+        logging.info(config)
         try:
             self.init_db()
         except Exception, e:
