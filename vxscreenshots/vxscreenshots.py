@@ -105,7 +105,7 @@ class AppShareSmart(object):
         if text:
             clipboard.set_text(text, -1)
         notify.Notification.new("<b>Copied</b>",
-                                'Copied to clipboard %s' % (text or 'No Image posted yet'), None).show()
+                                'Copied to clipboahd %s' % (text or 'No Image posted yet'), None).show()
 
     def run_watcher(self, event):
         notify.Notification.new("<b>Watcher is running</b>",
