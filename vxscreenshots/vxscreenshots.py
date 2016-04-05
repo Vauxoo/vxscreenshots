@@ -9,7 +9,7 @@ from gi.repository import Notify as notify
 import json
 from urllib2 import Request, urlopen
 import signal
-from os.path import abspath
+from os.path import join, dirname
 import sqlite3
 import logging
 from os.path import expanduser
@@ -24,9 +24,9 @@ class AppShareSmart(object):
     def __init__(self, indicator_id):
         APPINDICATOR_ID = indicator_id
         self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
-        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
-                                                    abspath('icon.svg'),
-                                                    self.ind_cat)
+        icon = join(dirname(__file__), 'icon.svg')
+        logging.info('Loading icon from %s ' % icon)
+        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         self.db = 'dev.db'  # If dev then local if not on .local
@@ -109,7 +109,11 @@ class AppShareSmart(object):
         notify.Notification.new("<b>Folder</b>",
                                 'Opening Folder on Explorer', None).show()
 
-if __name__ == "__main__":
+
+def cli():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = AppShareSmart('Shared on S3')
     app.run()
+
+if __name__ == "__main__":
+    cli()

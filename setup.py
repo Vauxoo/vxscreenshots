@@ -57,6 +57,7 @@ setup(
     scripts=['bin/screenshot.sh'],
     entry_points='''
         [console_scripts]
-        vx_screenshots_watcher=vxscreenshots.watch:cli
+        vxsswatcher=vxscreenshots.watch:cli
+        vxssicon=vxscreenshots.vxscreenshots:cli
     '''
 )
