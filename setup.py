@@ -14,11 +14,17 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-with open('requirements.txt') as req_file:
-    install_requires = [r.strip() for r in req_file.readlines()]
+try:
+    with open('requirements.txt') as req_file:
+        install_requires = [r.strip() for r in req_file.readlines()]
+except Exception, e:
+    print 'Are you testing?'
 
-with open('requirements_dev.txt') as req_file:
-    test_requirements = [r.strip() for r in req_file.readlines()]
+try:
+    with open('requirements_dev.txt') as req_file:
+        test_requirements = [r.strip() for r in req_file.readlines()]
+except Exception, e:
+    print 'Are you testing?'
 
 setup(
     name='vxscreenshots',
