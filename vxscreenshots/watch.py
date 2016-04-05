@@ -26,7 +26,9 @@ class S3Element(LoggingEventHandler):
         self.db = config.get('screenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
-        logging.info(self.db)
+        logging.info('Cache dbname: %s' % self.db)
+        logging.info('Bucket name: %s' % self.bucket)
+        logging.info('Folder name: %s' % self.folder)
 
     def get_conn(self):
         return self.conn.cursor()
@@ -63,7 +65,7 @@ class S3Element(LoggingEventHandler):
                               ContentType='image/%s' % ext[1:])
             self.url = self.get_url(fname)
             logging.info("Screenshot was pushed to %s" % self.url)
-            self.conn = sqlite3.connect('dev.db')
+            self.conn = sqlite3.connect(self.db)
             # Asume if running as a main script it is a dev mode
             self.cursor = self.get_conn()
             try:
@@ -71,9 +73,11 @@ class S3Element(LoggingEventHandler):
             except Exception, e:
                 logging.warning(e)
             try:
+
                 self.db_insert_new([(event.src_path, self.url, True)])
+                logging.warning('Inserted on db %s %s' % (event.src_path, self.url))
             except Exception, e:
-                logging.warning(e)
+                logging.warning('I could not insert on cache %s' % e)
 
 
 def cli():
@@ -92,8 +96,11 @@ on ~/.vxscreenshots/vxscreenshots.ini'''
     event_handler = S3Element(bucket or config.get('screenshots.bucket_name'),
                               folder or config.get('screenshots.folder'))
     observer = Observer()
-    if not path:
+    if path == '.':
         path = config.get('screenshots.supervised')
+    logging.info('Watching this Folder: %s' % path)
+    if not isdir(path):
+        makedirs(path)
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
     try:

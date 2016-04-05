@@ -104,6 +104,7 @@ class AppShareSmart(object):
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
         if text:
             clipboard.set_text(text, -1)
+        logging.info(text)
         notify.Notification.new("<b>Copied</b>",
                                 'Copied to clipboahd %s' % (text or 'No Image posted yet'), None).show()
 
