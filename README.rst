@@ -5,8 +5,8 @@ vxscreenshots
 .. image:: https://img.shields.io/pypi/v/vxscreenshots.svg
         :target: https://pypi.python.org/pypi/vxscreenshots
 
-.. image:: https://img.shields.io/travis/vauxoo/vxscreenshots.svg
-        :target: https://travis-ci.org/vauxoo/vxscreenshots
+.. image:: https://travis-ci.org/Vauxoo/vxscreenshots.svg?branch=master
+    :target: https://travis-ci.org/Vauxoo/vxscreenshots
 
 .. image:: https://readthedocs.org/projects/vxscreenshots/badge/?version=latest
         :target: https://readthedocs.org/projects/vxscreenshots/?badge=latest
