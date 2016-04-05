@@ -14,22 +14,25 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
+install_requires = []
 try:
     with open('requirements.txt') as req_file:
         install_requires = [r.strip() for r in req_file.readlines()]
 except Exception, e:
-    print 'Are you testing?'
+    print 'Are you testing? %s' % e
 
+test_requirements = []
 try:
     with open('requirements_dev.txt') as req_file:
         test_requirements = [r.strip() for r in req_file.readlines()]
 except Exception, e:
-    print 'Are you testing?'
+    print 'Are you testing? %s ' % e
 
 setup(
     name='vxscreenshots',
     version='2.0.0',
-    description="Basic Screenshots manager pushing and sharing automatically to Amazon S3",
+    description="Basic Screenshots manager pushing and sharing automatically "
+                "to Amazon S3",
     long_description=readme + '\n\n' + history,
     author="Vauxoo OpenSource Specialists",
     author_email='nhomar@vauxoo.com',
@@ -57,7 +60,7 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     test_suite='tests',
-    tests_require=test_requirements,
+    tests_requirements=test_requirements,
     scripts=['bin/screenshot.sh'],
     entry_points='''
         [console_scripts]

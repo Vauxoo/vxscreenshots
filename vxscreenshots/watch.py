@@ -46,7 +46,8 @@ class S3Element(LoggingEventHandler):
                             ''')
 
     def db_insert_new(self, images):
-        self.cursor.executemany('INSERT INTO stock_images VALUES (?,?,?)', images)
+        self.cursor.executemany('INSERT INTO stock_images VALUES (?,?,?)',
+                                images)
         self.conn.commit()
 
     def on_modified(self, event):
@@ -56,7 +57,9 @@ class S3Element(LoggingEventHandler):
     def send_to_s3(self, what, event):
         logging.info("Screenshot was Modified %s: %s", what, event.src_path)
         name, ext = os.path.splitext(event.src_path)
-        if what != 'directory' and os.path.isfile(event.src_path) and ext in self.valid_ext:
+        if what != 'directory' and \
+           os.path.isfile(event.src_path) and \
+           ext in self.valid_ext:
             s3 = boto3.resource('s3')
             data = open(event.src_path, 'rb')
             fname = self.get_path(os.path.basename(data.name))
@@ -73,9 +76,9 @@ class S3Element(LoggingEventHandler):
             except Exception, e:
                 logging.warning(e)
             try:
-
                 self.db_insert_new([(event.src_path, self.url, True)])
-                logging.warning('Inserted on db %s %s' % (event.src_path, self.url))
+                logging.warning('Inserted on db %s %s' % (event.src_path,
+                                                          self.url))
             except Exception, e:
                 logging.warning('I could not insert on cache %s' % e)
 

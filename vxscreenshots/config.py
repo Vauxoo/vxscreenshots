@@ -12,15 +12,17 @@ except ImportError:
     import getpass
     pwd = None
 
+
 def current_user():
     if pwd:
         return pwd.getpwuid(os.geteuid()).pw_name
     else:
         return getpass.getuser()
 
+
 def get_template_config(cfg):
     dirconfig = dirname(cfg)
-    content='''[vxscreenshots]
+    content = '''[vxscreenshots]
 database={dirconfig}
 supervised={supervised}
 folder={username}
@@ -28,6 +30,7 @@ folder={username}
                supervised=join(HOME, 'Pictures', 'screenshots'),
                username=current_user())
     return content
+
 
 def read_config():
     cfg = os.path.join(HOME, 'vxscreenshots.ini')
