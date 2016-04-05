@@ -22,7 +22,7 @@ with open('requirements_dev.txt') as req_file:
 
 setup(
     name='vxscreenshots',
-    version='1.0.0',
+    version='2.0.0',
     description="Basic Screenshots manager pushing and sharing automatically to Amazon S3",
     long_description=readme + '\n\n' + history,
     author="Vauxoo OpenSource Specialists",
