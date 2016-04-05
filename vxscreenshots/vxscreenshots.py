@@ -7,6 +7,7 @@ from gi.repository import AppIndicator3 as appindicator
 from gi.repository import Notify as notify
 
 import json
+import sys
 from urllib2 import Request, urlopen
 import signal
 from os.path import join, isdir, dirname
@@ -119,6 +120,9 @@ class AppShareSmart(object):
 
 
 def cli():
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '--version' or sys.argv[1]=='-v':
+            print __version__
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = AppShareSmart('Shared on S3')
     app.run()
