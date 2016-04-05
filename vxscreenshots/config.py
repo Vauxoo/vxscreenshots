@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 
 import os
+from os import makedirs
+import logging
 import ConfigParser
 from os.path import dirname, join, expanduser, isdir, isfile
 HOME = expanduser("~")
@@ -27,7 +29,7 @@ database={dirconfig}
 supervised={supervised}
 folder={username}
 bucket_name={bucket}
-    '''.format(dbconfig=dirconfig,
+    '''.format(dbconfig=join(dirconfig, 'cache.db'),
                supervised=join(HOME, 'Pictures', 'screenshots'),
                username=current_user(),
                bucket='screenshots.yourdomain.com')
@@ -35,17 +37,21 @@ bucket_name={bucket}
 
 
 def read_config():
-    cfg = os.path.join(HOME,
-                       '.vxscreenshots',
-                       'vxscreenshots.ini')
-    if not isfile(cfg) and not isdir(dirname(cfg)):
-        os.makedirs(dirname(cfg))
-        with open(cfg, 'a+') as configfile:
-            configfile.write(get_template_config(cfg))
-    parser = ConfigParser.RawConfigParser()
-    parser.read([cfg])
+    cfg = join(HOME, '.vxscreenshots', 'vxscreenshots.ini')
     rv = {}
+    if not isdir(dirname(cfg)):
+        makedirs(dirname(cfg))
+        if not os.isfile(cfg):
+            logging.info('Creating config file %s' % cfg)
+            with open(cfg, 'a+') as configfile:
+                configfile.write(get_template_config(cfg))
+            parser = ConfigParser.RawConfigParser()
+    parser.read([cfg])
+    logging.info('Reading config file %s' % cfg)
     for section in parser.sections():
         for key, value in parser.items(section):
             rv['%s.%s' % (section, key)] = value
+    if not rv:
+        logging.error('No Config file I will fail %s' % cfg)
+        exit()
     return rv
