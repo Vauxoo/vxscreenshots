@@ -3,12 +3,16 @@
 
 import sys
 import os
+from os import makedirs
+from os.path import isdir, dirname
 import time
 import logging
 import boto3
 import sqlite3
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
+from .config import read_config
+config = read_config()
 
 
 class S3Element(LoggingEventHandler):
@@ -19,7 +23,10 @@ class S3Element(LoggingEventHandler):
         self.bucket = bucket
         self.url = ''
         self.valid_ext = ['.png', '.jpg', '.gif', '.jpeg']
-        self.db = 'dev.db'  # If dev then local if not on .local
+        self.db = config.get('screenshots.database')
+        if not isdir(dirname(self.db)):
+            makedirs(dirname(self.db))
+        logging.info(self.db)
 
     def get_conn(self):
         return self.conn.cursor()
@@ -73,9 +80,20 @@ def cli():
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
+    # TODO: convert to click commands
+    if '--help' in sys.argv:
+        print '''usage: command [path to watch] [amazon bucket] [folder in bucket]
+If no arg provided it will read values on user config file
+on ~/.vxscreenshots/vxscreenshots.ini'''
+        exit()
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
-    event_handler = S3Element('screenshots.vauxoo.com', 'nhomar')
+    bucket = sys.argv[2] if len(sys.argv) > 2 else ''
+    folder = sys.argv[3] if len(sys.argv) > 3 else ''
+    event_handler = S3Element(bucket or config.get('screenshots.bucket_name'),
+                              folder or config.get('screenshots.folder'))
     observer = Observer()
+    if not path:
+        path = config.get('screenshots.supervised')
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
     try:
