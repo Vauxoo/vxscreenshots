@@ -69,7 +69,7 @@ class S3Element(LoggingEventHandler):
                 logging.warning(e)
 
 
-if __name__ == "__main__":
+def cli():
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
@@ -86,3 +86,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
+if __name__ == "__main__":
+    cli()
