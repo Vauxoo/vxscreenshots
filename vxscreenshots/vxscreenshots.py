@@ -9,10 +9,11 @@ from gi.repository import Notify as notify
 import json
 from urllib2 import Request, urlopen
 import signal
-from os.path import join, dirname
+from os.path import join, isdir, dirname
+from os import makedirs
 import sqlite3
 import logging
-from vxscreenshots.config import read_config
+from .config import read_config
 
 config = read_config()
 
@@ -30,10 +31,12 @@ class AppShareSmart(object):
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
-        self.db = config.screenshots.database  # If dev then local if not on .local
+        self.db = config.get('screenshots.database')
+        if not isdir(dirname(self.db)):
+            makedirs(dirname(self.db))
+        logging.info(self.db)
         self.conn = sqlite3.connect(self.db)
         self.cursor = self.get_conn()
-        logging.info(self.db)
         logging.info(config)
         try:
             self.init_db()
@@ -99,9 +102,10 @@ class AppShareSmart(object):
         three = self.get_last_three()
         text = three is not None and three[1]
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
-        clipboard.set_text(text, -1)
+        if text:
+            clipboard.set_text(text, -1)
         notify.Notification.new("<b>Copied</b>",
-                                'Copied to clipboard %s' % text, None).show()
+                                'Copied to clipboard %s' % (text or 'No Image posted yet'), None).show()
 
     def run_watcher(self, event):
         notify.Notification.new("<b>Watcher is running</b>",
