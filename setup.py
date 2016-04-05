@@ -54,6 +54,7 @@ setup(
     ],
     test_suite='tests',
     tests_require=test_requirements,
+    scripts=['bin/screenshot.sh'],
     entry_points='''
         [console_scripts]
         vx_screenshots_watcher=vxscreenshots.watch:cli
