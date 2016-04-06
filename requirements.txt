@@ -1,11 +1,3 @@
-argh
 boto3
 botocore
-docutils
-futures
-jmespath
-pathtools
-python-dateutil
-PyYAML
-six
 watchdog

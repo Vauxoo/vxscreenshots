@@ -16,14 +16,14 @@ with open('HISTORY.rst') as history_file:
 
 install_requires = []
 try:
-    with open('requirements.txt') as req_file:
+    with open('requirements.txt', 'rb') as req_file:
         install_requires = [r.strip() for r in req_file.readlines()]
 except Exception, e:
     print 'Are you testing? %s' % e
 
 test_requirements = []
 try:
-    with open('requirements_dev.txt') as req_file:
+    with open('requirements_dev.txt', 'rb') as req_file:
         test_requirements = [r.strip() for r in req_file.readlines()]
 except Exception, e:
     print 'Are you testing? %s ' % e
@@ -60,6 +60,7 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     test_suite='tests',
+    install_requires=install_requires,
     tests_requirements=test_requirements,
     scripts=['bin/screenshot.sh'],
     entry_points='''
