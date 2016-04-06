@@ -16,15 +16,19 @@ import logging
 from .config import read_config
 
 config = read_config()
-
+root = logging.getLogger()
+if root.handlers:
+    for handler in root.handlers:
+        root.removeHandler(handler)
+        logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
+                            level=logging.INFO)
 
 
 class AppShareSmart(object):
     def __init__(self, indicator_id):
         APPINDICATOR_ID = indicator_id
         self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
-        self.logger = logging.getLogger(__name__)
-        self.format_login()
+        self.format_logging()
         icon = join(dirname(__file__), 'icon.svg')
         self.logger.info('Loading icon from %s ' % icon)
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
@@ -43,9 +47,9 @@ class AppShareSmart(object):
             self.logger.warning(e)
         notify.init(APPINDICATOR_ID)
 
-    def format_login(self, log_level='INFO'):
-        logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
-                            level=logging.INFO)
+    def format_logging(self, log_level='INFO'):
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
 
     def get_conn(self):
         return self.conn.cursor()
