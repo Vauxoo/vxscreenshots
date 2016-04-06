@@ -20,7 +20,7 @@ config = read_config()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-lh = logging.streamHandler()
+lh = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 lh.setFormatter(formatter)
 logger.addHandler(lh)
