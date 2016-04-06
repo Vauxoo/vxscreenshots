@@ -16,12 +16,6 @@ import logging
 from .config import read_config
 
 config = read_config()
-root = logging.getLogger()
-if root.handlers:
-    for handler in root.handlers:
-        root.removeHandler(handler)
-        logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
-                            level=logging.INFO)
 
 
 class AppShareSmart(object):
@@ -48,6 +42,12 @@ class AppShareSmart(object):
         notify.init(APPINDICATOR_ID)
 
     def format_logging(self, log_level='INFO'):
+        root = logging.getLogger()
+        if root.handlers:
+            for handler in root.handlers:
+                root.removeHandler(handler)
+                logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
+                                    level=logging.INFO)
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
 
