@@ -34,7 +34,6 @@ class AppShareSmart(object):
         self.logger.info(self.db)
         self.conn = sqlite3.connect(self.db)
         self.cursor = self.get_conn()
-        self.logger.info(config)
         try:
             self.init_db()
         except Exception, e:
