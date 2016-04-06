@@ -23,7 +23,7 @@ class S3Element(LoggingEventHandler):
         self.bucket = bucket
         self.url = ''
         self.valid_ext = ['.png', '.jpg', '.gif', '.jpeg']
-        self.db = config.get('screenshots.database')
+        self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
         logging.info('Cache dbname: %s' % self.db)
@@ -96,11 +96,11 @@ on ~/.vxscreenshots/vxscreenshots.ini'''
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
     bucket = sys.argv[2] if len(sys.argv) > 2 else ''
     folder = sys.argv[3] if len(sys.argv) > 3 else ''
-    event_handler = S3Element(bucket or config.get('screenshots.bucket_name'),
-                              folder or config.get('screenshots.folder'))
+    event_handler = S3Element(bucket or config.get('vxscreenshots.bucket_name'),
+                              folder or config.get('vxscreenshots.folder'))
     observer = Observer()
     if path == '.':
-        path = config.get('screenshots.supervised')
+        path = config.get('vxscreenshots.supervised')
     logging.info('Watching this Folder: %s' % path)
     if not isdir(path):
         makedirs(path)

@@ -32,7 +32,7 @@ class AppShareSmart(object):
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
-        self.db = config.get('screenshots.database')
+        self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
         logging.info(self.db)
