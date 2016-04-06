@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os
 from os import makedirs
-from os.path import isdir, dirname
+from os.path import isdir, isfile, dirname, splitext, basename
 import time
 import logging
 import boto3
@@ -70,13 +69,13 @@ class S3Element(LoggingEventHandler):
     def send_to_s3(self, what, event):
         self.logger.info("Screenshot was Modified %s: %s", what,
                          event.src_path)
-        name, ext = os.path.splitext(event.src_path)
+        name, ext = splitext(event.src_path)
         if what != 'directory' and \
-           os.path.isfile(event.src_path) and \
+           isfile(event.src_path) and \
            ext in self.valid_ext:
             s3 = boto3.resource('s3')
             data = open(event.src_path, 'rb')
-            fname = self.get_path(os.path.basename(data.name))
+            fname = self.get_path(basename(data.name))
             bucket = s3.Bucket(self.bucket)
             bucket.put_object(Key=fname, Body=data, ACL='public-read',
                               ContentType='image/%s' % ext[1:])
@@ -92,9 +91,25 @@ class S3Element(LoggingEventHandler):
             try:
                 self.db_insert_new([(event.src_path, self.url, True)])
                 self.logger.warning('Inserted on db %s %s' % (event.src_path,
-                                                         self.url))
+                                                              self.url))
             except Exception, e:
                 self.logger.warning('I could not insert on cache %s' % e)
+
+
+def start_watcher(path, handler):
+    observer = Observer()
+    if not isdir(path):
+        makedirs(path)
+    observer.schedule(handler, path, recursive=True)
+    observer.start()
+    try:
+        while True:
+            time.sleep(1)
+    except IOError:
+        handler.logger.info('A crazy file changed')
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
 
 
 @click.option('--path', default=config.get('vxscreenshots.supervised'),
@@ -109,16 +124,6 @@ def cli(path, bucket, folder):
     event_handler = S3Element(bucket, folder)
     msg = 'Sending to this bucket %s %s %s' % (bucket, folder, path)
     event_handler.logger.info(msg)
-    observer = Observer()
-    observer.schedule(event_handler, path, recursive=True)
-    observer.start()
-    try:
-        while True:
-            time.sleep(1)
-    except IOError:
-        event_handler.logger.info('A crazy file changed')
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
+    start_watcher(path, event_handler)
 if __name__ == "__main__":
     cli()
