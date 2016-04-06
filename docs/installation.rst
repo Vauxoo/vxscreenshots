@@ -10,7 +10,8 @@ On Ubuntu:
 
 At the command line::
 
-    $ sudo pip install python-pip
+    $ sudo apt-get install python-pip \
+                           awscli
 
 Installing last version of pip::
 
@@ -53,7 +54,17 @@ Checking your config setted::
 
     $ vim ~/.vxscreenshots/vxscreenshots.ini
 
-And set your parameters for bucket and local dirs to be watched.
+**Now we need to set Amazon S3 Credenetials**.
+
+Before make a first example we need to set amazon credentials as boto3
+configuration `indicates`_. And set your parameters for bucket and local
+directories to be watched.::
+
+    $ aws configure
+    AWS Access Key ID [None]: YOURKEY_ID
+    AWS Secret Access Key [None]: YOURKEYASKEDTOAMAZON
+    Default region name [None]: us-east-1
+    Default output format [None]:  
 
 **Configuring**
 
@@ -73,3 +84,6 @@ Or, if you have virtualenvwrapper installed::
 
     $ mkvirtualenv vxscreenshots
     $ pip install vxscreenshots
+
+.. _indicates: http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file
+
