@@ -12,14 +12,8 @@ import sqlite3
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 from .config import read_config
-config = read_config()
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-lh = logging.StreamHandler()
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-lh.setFormatter(formatter)
-logger.addHandler(lh)
 
+config = read_config()
 
 class S3Element(LoggingEventHandler):
 
@@ -28,13 +22,24 @@ class S3Element(LoggingEventHandler):
         self.folder = folder
         self.bucket = bucket
         self.url = ''
+        self.format_logging()
         self.valid_ext = ['.png', '.jpg', '.gif', '.jpeg']
         self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
-        logger.info('Cache dbname: %s' % self.db)
-        logger.info('Bucket name: %s' % self.bucket)
-        logger.info('Folder name: %s' % self.folder)
+        self.logger.info('Cache dbname: %s' % self.db)
+        self.logger.info('Bucket name: %s' % self.bucket)
+        self.logger.info('Folder name: %s' % self.folder)
+
+    def format_logging(self, log_level='INFO'):
+        root = logging.getLogger()
+        if root.handlers:
+            for handler in root.handlers:
+                root.removeHandler(handler)
+                logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
+                                    level=logging.INFO)
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
 
     def get_conn(self):
         return self.conn.cursor()
@@ -61,7 +66,7 @@ class S3Element(LoggingEventHandler):
         self.send_to_s3(what, event)
 
     def send_to_s3(self, what, event):
-        logger.info("Screenshot was Modified %s: %s", what, event.src_path)
+        self.logger.info("Screenshot was Modified %s: %s", what, event.src_path)
         name, ext = os.path.splitext(event.src_path)
         if what != 'directory' and \
            os.path.isfile(event.src_path) and \
@@ -73,20 +78,20 @@ class S3Element(LoggingEventHandler):
             bucket.put_object(Key=fname, Body=data, ACL='public-read',
                               ContentType='image/%s' % ext[1:])
             self.url = self.get_url(fname)
-            logger.info("Screenshot was pushed to %s" % self.url)
+            self.logger.info("Screenshot was pushed to %s" % self.url)
             self.conn = sqlite3.connect(self.db)
             # Asume if running as a main script it is a dev mode
             self.cursor = self.get_conn()
             try:
                 self.init_db()
             except Exception, e:
-                logger.warning(e)
+                self.logger.warning(e)
             try:
                 self.db_insert_new([(event.src_path, self.url, True)])
-                logger.warning('Inserted on db %s %s' % (event.src_path,
+                self.logger.warning('Inserted on db %s %s' % (event.src_path,
                                                          self.url))
             except Exception, e:
-                logger.warning('I could not insert on cache %s' % e)
+                self.logger.warning('I could not insert on cache %s' % e)
 
 
 @click.option('--path', default=config.get('vxscreenshots.supervised'),
@@ -100,8 +105,7 @@ def cli(path, bucket, folder):
     '''Watch a folder and push images automatically to amazon S3'''
     event_handler = S3Element(bucket, folder)
     msg = 'Sending to this bucket %s %s %s' % (bucket, folder, path)
-    click.echo(msg)
-    logger.info(msg)
+    event_handler.logger.info(msg)
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
@@ -109,7 +113,7 @@ def cli(path, bucket, folder):
         while True:
             time.sleep(1)
     except IOError:
-        logger.info('A crazy file changed')
+        self.logger.info('A crazy file changed')
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
