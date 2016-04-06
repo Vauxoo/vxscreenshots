@@ -39,15 +39,21 @@ Note::
     replace sud by --user
 
 
-Testing what you just installed::
+Now run 2 tools in order of create all configuration files.::
 
     $ vxssicon
 
-    This should run normally.
+    This should run normally ctrl+c to kill it.
 
     $ vxsswatcher
 
-    This should run normally.
+    This should run normally ctrl+c to kill it.
+
+Checking your config setted::
+
+    $ vim ~/.vxscreenshots/vxscreenshots.ini
+
+And set your parameters for bucket and local dirs to be watched.
 
 **Configuring**
 
