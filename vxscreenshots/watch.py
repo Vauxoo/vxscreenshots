@@ -96,7 +96,7 @@ class S3Element(LoggingEventHandler):
 @click.command()
 def cli(path, bucket, folder):
     '''Watch a folder and push images automatically to amazon S3'''
-    event_handler = S3Element(bucket, folder),
+    event_handler = S3Element(bucket, folder)
     msg = 'Sending to this bucket %s %s %s' % (bucket, folder, path)
     click.echo(msg)
     logger.info(msg)
