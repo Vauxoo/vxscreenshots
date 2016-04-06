@@ -37,7 +37,8 @@ class S3Element(LoggingEventHandler):
         if root.handlers:
             for handler in root.handlers:
                 root.removeHandler(handler)
-                logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
+                logging.basicConfig(format='%(asctime)s: %(name)s: '
+                                    '%(levelname)s: %(message)s',
                                     level=logging.INFO)
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
@@ -67,7 +68,8 @@ class S3Element(LoggingEventHandler):
         self.send_to_s3(what, event)
 
     def send_to_s3(self, what, event):
-        self.logger.info("Screenshot was Modified %s: %s", what, event.src_path)
+        self.logger.info("Screenshot was Modified %s: %s", what,
+                         event.src_path)
         name, ext = os.path.splitext(event.src_path)
         if what != 'directory' and \
            os.path.isfile(event.src_path) and \
