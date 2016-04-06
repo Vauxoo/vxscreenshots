@@ -18,9 +18,13 @@ from .config import read_config
 
 config = read_config()
 
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 class AppShareSmart(object):
@@ -28,21 +32,21 @@ class AppShareSmart(object):
         APPINDICATOR_ID = indicator_id
         self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
         icon = join(dirname(__file__), 'icon.svg')
-        logging.info('Loading icon from %s ' % icon)
+        logger.info('Loading icon from %s ' % icon)
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
-        logging.info(self.db)
+        logger.info(self.db)
         self.conn = sqlite3.connect(self.db)
         self.cursor = self.get_conn()
-        logging.info(config)
+        logger.info(config)
         try:
             self.init_db()
         except Exception, e:
-            logging.warning(e)
+            logger.warning(e)
         notify.init(APPINDICATOR_ID)
 
     def get_conn(self):
@@ -93,7 +97,7 @@ class AppShareSmart(object):
         gtk.main_quit()
 
     def run(self):
-        logging.info('Serving db: %s' % self.db)
+        logger.info('Serving db: %s' % self.db)
         gtk.main()
 
     def joke(self, event):
@@ -105,7 +109,7 @@ class AppShareSmart(object):
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
         if text:
             clipboard.set_text(text, -1)
-        logging.info(text)
+        logger.info(text)
         notify.Notification.new("<b>Copied</b>",
                                 'Copied to clipboahd %s' % (text or 'No Image posted yet'), None).show()
 
