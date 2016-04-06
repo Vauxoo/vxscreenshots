@@ -25,7 +25,7 @@ def current_user():
 def get_template_config(cfg):
     dirconfig = dirname(cfg)
     content = '''[vxscreenshots]
-database={dirconfig}
+database={dbconfig}
 supervised={supervised}
 folder={username}
 bucket_name={bucket}
