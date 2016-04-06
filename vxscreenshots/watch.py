@@ -15,6 +15,7 @@ from .config import read_config
 
 config = read_config()
 
+
 class S3Element(LoggingEventHandler):
 
     def __init__(self, bucket, folder):
@@ -113,7 +114,7 @@ def cli(path, bucket, folder):
         while True:
             time.sleep(1)
     except IOError:
-        self.logger.info('A crazy file changed')
+        event_handler.logger.info('A crazy file changed')
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
