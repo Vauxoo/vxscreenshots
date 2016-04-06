@@ -7,7 +7,6 @@ from gi.repository import AppIndicator3 as appindicator
 from gi.repository import Notify as notify
 
 import json
-import sys
 from urllib2 import Request, urlopen
 import signal
 from os.path import join, isdir, dirname
@@ -19,6 +18,7 @@ from .config import read_config
 config = read_config()
 
 logger = logging.getLogger(__name__)
+logger.handlers.pop()
 logger.setLevel(logging.INFO)
 lh = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
