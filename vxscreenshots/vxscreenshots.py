@@ -19,12 +19,11 @@ from .config import read_config
 config = read_config()
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)
+lh = logging.streamHandler()
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-logger.addHandler(ch)
+lh.setFormatter(formatter)
+logger.addHandler(lh)
 
 
 class AppShareSmart(object):
