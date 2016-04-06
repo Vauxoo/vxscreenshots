@@ -13,24 +13,13 @@ At the command line::
     $ sudo apt-get install python-pip \
                            awscli
 
-Installing last version of pip::
-
-    $ sudo pip install pip --upgrade
-
-Ensure you have the last version::
-
-    $ pip --version
-    pip 8.1.1 ""or greater""
-
-Now install it from pip::
-
-    Isolated on your user.
+Now install it from pip, isolated on your user.::
 
     $ pip install vxscreenshots --user
     $ echo "export PATH=$PATH:$HOME/.local/bin/" >> $HOME/.bashrc
     $ source $HOME/.bashrc
 
-    or with sudo.
+or with sudo.::
 
     $ sudo pip install vxscreenshots
 
@@ -38,7 +27,6 @@ Note::
 
     Due to we created some helpers scripts ese sudo is a good idea, but you can
     replace sud by --user
-
 
 Now run 2 tools in order of create all configuration files.::
 
@@ -76,14 +64,24 @@ a proper DNS entry in order to set the link properlly when sharing.::
 
     $ vim $HOME/.vxscreenshots/vxsscreenshots.ini
 
-Ensure your credentials to amazon are setted correctly::
+**Let's test what we have**
 
-    $ vim $HOME/.aws/credentials
+This program is done with 2 daemons.:
 
-Or, if you have virtualenvwrapper installed::
+1. vxsswatcher: one which watch the folder configured with pictures and push 
+everything which is new/modified to s3, recording such information in the cache
+database
+2. vxssicon: which gives a graphical interface to allow you get some interesting
+links automatically into the clipboard and other fetures.
 
-    $ mkvirtualenv vxscreenshots
-    $ pip install vxscreenshots
+Then open 2 bash consoles and run both again after you configured the amazon 
+key, then run both daemons, you should see something like this.
+
+.. image:: http://screenshots.vauxoo.com/oem/testing_vxscreenshots.png
+    :width: 800px
+    :alt: How desktop looks like
+    :align: center
+
 
 .. _indicates: http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file
 
