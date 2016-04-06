@@ -14,9 +14,9 @@ from watchdog.events import LoggingEventHandler
 from .config import read_config
 config = read_config()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger.setFormatter(formatter)
+logger.setLevel(logging.INFO)
+click.echo(dir(logger))
 
 class S3Element(LoggingEventHandler):
 
