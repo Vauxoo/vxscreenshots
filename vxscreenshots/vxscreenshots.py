@@ -17,36 +17,35 @@ from .config import read_config
 
 config = read_config()
 
-logger = logging.getLogger(__name__)
-logger.handlers.pop()
-logger.setLevel(logging.INFO)
-lh = logging.StreamHandler()
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-lh.setFormatter(formatter)
-logger.addHandler(lh)
 
 
 class AppShareSmart(object):
     def __init__(self, indicator_id):
         APPINDICATOR_ID = indicator_id
         self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
+        self.logger = logging.getLogger(__name__)
+        self.format_login()
         icon = join(dirname(__file__), 'icon.svg')
-        logger.info('Loading icon from %s ' % icon)
+        self.logger.info('Loading icon from %s ' % icon)
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
-        logger.info(self.db)
+        self.logger.info(self.db)
         self.conn = sqlite3.connect(self.db)
         self.cursor = self.get_conn()
-        logger.info(config)
+        self.logger.info(config)
         try:
             self.init_db()
         except Exception, e:
-            logger.warning(e)
+            self.logger.warning(e)
         notify.init(APPINDICATOR_ID)
+
+    def format_login(self, log_level='INFO'):
+        logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
+                            level=logging.INFO)
 
     def get_conn(self):
         return self.conn.cursor()
@@ -96,7 +95,7 @@ class AppShareSmart(object):
         gtk.main_quit()
 
     def run(self):
-        logger.info('Serving db: %s' % self.db)
+        self.logger.info('Serving db: %s' % self.db)
         gtk.main()
 
     def joke(self, event):
@@ -108,7 +107,7 @@ class AppShareSmart(object):
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
         if text:
             clipboard.set_text(text, -1)
-        logger.info(text)
+        self.logger.info(text)
         notify.Notification.new("<b>Copied</b>",
                                 'Copied to clipboahd %s' % (text or 'No Image posted yet'), None).show()
 
