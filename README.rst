@@ -22,10 +22,11 @@ Features
   into the clipboard.
 * Button to manage this behavior graphically avoiding go to the folder and make
   magic to get a shareable link.
-    * Direct Link.
-    * Rst Code.
-    * Html Code.
-    * Markdown Code.
+  
+  - Direct Link.
+  - Rst Code.
+  - Html Code.
+  - Markdown Code.
 
 Credits
 -------
