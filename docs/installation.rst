@@ -5,7 +5,7 @@ Installation
 ============
 
 
-On Ubuntu:
+On Ubuntu.
 ==========
 
 At the command line::
