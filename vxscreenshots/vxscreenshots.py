@@ -28,7 +28,6 @@ class AppShareSmart(object):
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
                                                     icon,
                                                     self.ind_cat)
-        print dir(self.indicator)
         self.indicator.set_title('Hola')
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
