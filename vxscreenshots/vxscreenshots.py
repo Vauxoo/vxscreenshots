@@ -45,7 +45,8 @@ class AppShareSmart(object):
         if root.handlers:
             for handler in root.handlers:
                 root.removeHandler(handler)
-                logging.basicConfig(format='%(asctime)s: %(name)s: %(levelname)s: %(message)s',
+                logging.basicConfig(format='%(asctime)s: %(name)s: '
+                                    '%(levelname)s: %(message)s',
                                     level=logging.INFO)
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
@@ -68,17 +69,23 @@ class AppShareSmart(object):
 
     def build_menu(self):
         menu = gtk.Menu()
+        item_last_link = gtk.MenuItem('Direct Link')
+        item_last_md = gtk.MenuItem('Markdown Code')
+        item_last_rst = gtk.MenuItem('rST Code')
         item_quit = gtk.MenuItem('Quit')
         item_joke = gtk.MenuItem('Joke')
-        item_last = gtk.MenuItem('Copy Last')
         item_view = gtk.MenuItem('View in Folder')
         item_run = gtk.MenuItem('Run Watcher')
+        item_last_link.connect('activate', self.last)
+        item_last_md.connect('activate', self.last)
+        item_last_rst.connect('activate', self.last)
         item_quit.connect('activate', self.quit)
         item_joke.connect('activate', self.joke)
-        item_last.connect('activate', self.last)
         item_view.connect('activate', self.view_in_folder)
         item_run.connect('activate', self.run_watcher)
-        menu.append(item_last)
+        menu.append(item_last_link)
+        menu.append(item_last_md)
+        menu.append(item_last_rst)
         menu.append(item_run)
         menu.append(item_view)
         menu.append(item_joke)
