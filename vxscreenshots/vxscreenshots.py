@@ -73,16 +73,18 @@ class AppShareSmart(object):
 
     def build_menu(self):
         menu = gtk.Menu()
-        item_last = gtk.MenuItem('Get Last Item')
+        item_last = gtk.MenuItem('Get Image code Last Item')
         item_last_link = gtk.MenuItem('Direct Link')
-        item_last_md = gtk.MenuItem('Markdown Code')
-        item_last_rst = gtk.MenuItem('rST Code')
+        item_last_html = gtk.MenuItem('Html')
+        item_last_md = gtk.MenuItem('Markdown')
+        item_last_rst = gtk.MenuItem('rST')
         item_quit = gtk.MenuItem('Quit')
         item_joke = gtk.MenuItem('Joke')
         item_view = gtk.MenuItem('View in Folder')
         separator = gtk.SeparatorMenuItem()
         item_run = gtk.MenuItem('Run Watcher')
         item_last_link.connect('activate', self.last_link)
+        item_last_html.connect('activate', self.last_html)
         item_last_md.connect('activate', self.last_md)
         item_last_rst.connect('activate', self.last_rst)
         item_quit.connect('activate', self.quit)
@@ -91,6 +93,7 @@ class AppShareSmart(object):
         item_run.connect('activate', self.run_watcher)
         subMenu = gtk.Menu()
         subMenu.append(item_last_link)
+        subMenu.append(item_last_html)
         subMenu.append(item_last_md)
         subMenu.append(item_last_rst)
         item_last.set_submenu(subMenu)
@@ -132,6 +135,10 @@ class AppShareSmart(object):
     def last_link(self, event):
         link = self.last(event)
         self.clipboard(link)
+
+    def last_html(self, event):
+        link = self.last(event)
+        self.clipboard('<img src="%s" width=auto></img>' % link)
 
     def last_md(self, event):
         link = self.last(event)
