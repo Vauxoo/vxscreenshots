@@ -25,7 +25,11 @@ class AppShareSmart(object):
         self.format_logging()
         icon = join(dirname(__file__), 'icon.svg')
         self.logger.info('Loading icon from %s ' % icon)
-        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID, icon, self.ind_cat)
+        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
+                                                    icon,
+                                                    self.ind_cat)
+        print dir(self.indicator)
+        self.indicator.set_title('Hola')
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         self.db = config.get('vxscreenshots.database')
@@ -69,26 +73,32 @@ class AppShareSmart(object):
 
     def build_menu(self):
         menu = gtk.Menu()
+        item_last = gtk.MenuItem('Get Last Item')
         item_last_link = gtk.MenuItem('Direct Link')
         item_last_md = gtk.MenuItem('Markdown Code')
         item_last_rst = gtk.MenuItem('rST Code')
         item_quit = gtk.MenuItem('Quit')
         item_joke = gtk.MenuItem('Joke')
         item_view = gtk.MenuItem('View in Folder')
+        separator = gtk.SeparatorMenuItem()
         item_run = gtk.MenuItem('Run Watcher')
-        item_last_link.connect('activate', self.last)
-        item_last_md.connect('activate', self.last)
-        item_last_rst.connect('activate', self.last)
+        item_last_link.connect('activate', self.last_link)
+        item_last_md.connect('activate', self.last_md)
+        item_last_rst.connect('activate', self.last_rst)
         item_quit.connect('activate', self.quit)
         item_joke.connect('activate', self.joke)
         item_view.connect('activate', self.view_in_folder)
         item_run.connect('activate', self.run_watcher)
-        menu.append(item_last_link)
-        menu.append(item_last_md)
-        menu.append(item_last_rst)
+        subMenu = gtk.Menu()
+        subMenu.append(item_last_link)
+        subMenu.append(item_last_md)
+        subMenu.append(item_last_rst)
+        item_last.set_submenu(subMenu)
+        menu.append(item_last)
         menu.append(item_run)
         menu.append(item_view)
         menu.append(item_joke)
+        menu.append(separator)
         menu.append(item_quit)
         menu.show_all()
         return menu
@@ -111,15 +121,34 @@ class AppShareSmart(object):
     def joke(self, event):
         notify.Notification.new("<b>Joke</b>", self.fetch_joke(), None).show()
 
-    def last(self, event):
-        three = self.get_last_three()
-        text = three is not None and three[1]
+    def clipboard(self, text):
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
         if text:
             clipboard.set_text(text, -1)
         self.logger.info(text)
-        notify.Notification.new("<b>Copied</b>",
-                                'Copied to clipboahd %s' % (text or 'No Image posted yet'), None).show()
+        msg = 'Copied to clipboard %s' % (text or 'No Image posted yet')
+        notify.Notification.new('<b>Copied</b>', msg, None).show()
+
+    def last_link(self, event):
+        link = self.last(event)
+        self.clipboard(link)
+
+    def last_md(self, event):
+        link = self.last(event)
+        self.clipboard('![](%s)' % link)
+
+    def last_rst(self, event):
+        link = self.last(event)
+        self.clipboard(''
+                       '.. image:: %s\n'
+                       '   :height: 100\n'
+                       '   :width: 100\n'
+                       '   :scale: 100\n'
+                       '   :alt: alternate text' % link)
+
+    def last(self, event):
+        three = self.get_last_three()
+        return three is not None and three[1]
 
     def run_watcher(self, event):
         notify.Notification.new("<b>Watcher is running</b>",
