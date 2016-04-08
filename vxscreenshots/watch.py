@@ -11,6 +11,7 @@ import sqlite3
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler
 from .config import read_config
+from contextlib import closing
 
 config = read_config()
 
@@ -22,9 +23,9 @@ class S3Element(LoggingEventHandler):
         self.folder = folder
         self.bucket = bucket
         self.url = ''
+        self.db = config.get('vxscreenshots.database')
         self.format_logging()
         self.valid_ext = ['.png', '.jpg', '.gif', '.jpeg']
-        self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
         self.logger.info('Cache dbname: %s' % self.db)
@@ -42,9 +43,6 @@ class S3Element(LoggingEventHandler):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
 
-    def get_conn(self):
-        return self.conn.cursor()
-
     def get_path(self, src_path):
         return '{}/{}'.format(self.folder, src_path)
 
@@ -53,47 +51,51 @@ class S3Element(LoggingEventHandler):
                                                 fname=fname)
 
     def init_db(self):
-        self.cursor.execute('''CREATE TABLE stock_images
-                                 (path text, url text, synced boolean)
-                            ''')
-
-    def db_insert_new(self, images):
-        self.cursor.executemany('INSERT INTO stock_images VALUES (?,?,?)',
-                                images)
-        self.conn.commit()
+        with closing(self.conn.cursor()) as cursor:
+            cursor.execute('''CREATE TABLE stock_images
+                                (path text,
+                                 url text,
+                                 synced boolean,
+                                 dt datetime default current_timestamp)
+                           ''')
+            cursor.commit()
 
     def on_modified(self, event):
         what = 'directory' if event.is_directory else 'file'
         self.send_to_s3(what, event)
 
     def send_to_s3(self, what, event):
+        def db_insert_new(images):
+            conn = sqlite3.connect(self.db)
+            with closing(conn.cursor()) as cursor:
+                cursor.executemany('INSERT INTO stock_images VALUES (?,?,?,CURRENT_TIMESTAMP)',
+                                   images)
+                conn.commit()
+                self.logger.warning('Inserted on db %s %s' % (event.src_path,
+                                                              self.url))
         self.logger.info("Screenshot was Modified %s: %s", what,
                          event.src_path)
         name, ext = splitext(event.src_path)
         if what != 'directory' and \
            isfile(event.src_path) and \
            ext in self.valid_ext:
-            s3 = boto3.resource('s3')
-            data = open(event.src_path, 'rb')
-            fname = self.get_path(basename(data.name))
-            bucket = s3.Bucket(self.bucket)
-            bucket.put_object(Key=fname, Body=data, ACL='public-read',
-                              ContentType='image/%s' % ext[1:])
-            self.url = self.get_url(fname)
-            self.logger.info("Screenshot was pushed to %s" % self.url)
-            self.conn = sqlite3.connect(self.db)
             # Asume if running as a main script it is a dev mode
-            self.cursor = self.get_conn()
             try:
                 self.init_db()
             except Exception, e:
                 self.logger.warning(e)
             try:
-                self.db_insert_new([(event.src_path, self.url, True)])
-                self.logger.warning('Inserted on db %s %s' % (event.src_path,
-                                                              self.url))
+                s3 = boto3.resource('s3')
+                data = open(event.src_path, 'rb')
+                fname = self.get_path(basename(data.name))
+                db_insert_new([(event.src_path, self.url, True)])
+                bucket = s3.Bucket(self.bucket)
+                bucket.put_object(Key=fname, Body=data, ACL='public-read',
+                                  ContentType='image/%s' % ext[1:])
+                self.url = self.get_url(fname)
+                self.logger.info("Screenshot was pushed to %s" % self.url)
             except Exception, e:
-                self.logger.warning('I could not insert on cache %s' % e)
+                self.logger.warning('I could not save %s' % e)
 
 
 def start_watcher(path, handler):

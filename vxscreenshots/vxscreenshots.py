@@ -14,6 +14,7 @@ from os import makedirs
 import sqlite3
 import logging
 from .config import read_config
+from contextlib import closing
 
 config = read_config()
 
@@ -28,7 +29,6 @@ class AppShareSmart(object):
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
                                                     icon,
                                                     self.ind_cat)
-        self.indicator.set_title('Hola')
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         self.db = config.get('vxscreenshots.database')
@@ -36,7 +36,6 @@ class AppShareSmart(object):
             makedirs(dirname(self.db))
         self.logger.info(self.db)
         self.conn = sqlite3.connect(self.db)
-        self.cursor = self.get_conn()
         try:
             self.init_db()
         except Exception, e:
@@ -54,21 +53,23 @@ class AppShareSmart(object):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
 
-    def get_conn(self):
-        return self.conn.cursor()
-
     def init_db(self):
-        self.cursor.execute('''CREATE TABLE stock_images
-                                 (path text, url text, synced boolean)
-                            ''')
-        self.conn.commit()
+        with closing(self.conn.cursor()) as cursor:
+            cursor.execute('''CREATE TABLE stock_images
+                                    (path text,
+                                     url text,
+                                     synced boolean,
+                                     dt datetime default current_timestamp)
+                           ''')
+            self.conn.commit()
 
     def get_last_three(self):
-        elements = self.cursor.execute('''SELECT * FROM stock_images
-                                            ORDER BY path
-                                            LIMIT 3
-                                        ''')
-        return elements.fetchone()
+        with closing(self.conn.cursor()) as cursor:
+            elements = cursor.execute('''SELECT * FROM stock_images
+                                         ORDER BY dt desc
+                                         LIMIT 3
+                                      ''')
+            return elements.fetchone()
 
     def build_menu(self):
         menu = gtk.Menu()
@@ -81,6 +82,8 @@ class AppShareSmart(object):
         item_joke = gtk.MenuItem('Joke')
         item_view = gtk.MenuItem('View in Folder')
         separator = gtk.SeparatorMenuItem()
+        separator_m = gtk.SeparatorMenuItem()
+        separator_q = gtk.SeparatorMenuItem()
         item_run = gtk.MenuItem('Run Watcher')
         item_last_link.connect('activate', self.last_link)
         item_last_html.connect('activate', self.last_html)
@@ -97,10 +100,12 @@ class AppShareSmart(object):
         subMenu.append(item_last_rst)
         item_last.set_submenu(subMenu)
         menu.append(item_last)
+        menu.append(separator_m)
         menu.append(item_run)
         menu.append(item_view)
-        menu.append(item_joke)
         menu.append(separator)
+        menu.append(item_joke)
+        menu.append(separator_q)
         menu.append(item_quit)
         menu.show_all()
         return menu
@@ -158,7 +163,8 @@ class AppShareSmart(object):
 
     def run_watcher(self, event):
         notify.Notification.new("<b>Watcher is running</b>",
-                                'Watcher is running of folder XXXX',
+                                'Running screenshot.sh script and sending \n'
+                                'screenshots to configured watched image....',
                                 None).show()
 
     def view_in_folder(self, event):
