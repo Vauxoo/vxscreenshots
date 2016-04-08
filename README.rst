@@ -1,19 +1,34 @@
-=============
-VXScreenshots
-=============
+=====
+About
+=====
 
 .. image:: https://img.shields.io/pypi/v/vxscreenshots.svg
-        :target: https://pypi.python.org/pypi/vxscreenshots
+    :target: https://pypi.python.org/pypi/vxscreenshots
 
 .. image:: https://travis-ci.org/Vauxoo/vxscreenshots.svg?branch=master
     :target: https://travis-ci.org/Vauxoo/vxscreenshots
 
+What is VXScreenshots?.
+=======================
+
 Basic Screenshots manager pushing and sharing automatically to Amazon S3 images
 and giving the link automatically to use them alá Skitch.
 
-* Free software: MIT license
+Where?
+======
+
+* Free software: MIT license.
 * Documentation: https://vauxoo.github.io/vxscreenshots
-* TODO: Link to video.
+* Source code: https://github.com/vauxoo/vxscreenshots
+* Commercial support and services at Vauxoo_.
+
+See a little demonstration of what you can do.
+==============================================
+
+.. image:: http://www.trend247.net/ico/play_video.png
+    :target: https://youtube.com/vauxoomedia
+    :align: center
+
 Features
 --------
 
@@ -29,16 +44,16 @@ Features
   - Html Code.
   - Markdown Code.
 
-Credits
--------
+* Helper script to run your favorite screenshots manager app.
 
-This package is to be used internally by Vauxoo's team if you think it can be 
-improved PR's are welcome.
+Thanks
+------
 
 This is part of *Helper Packages* from Vauxoo.
 
 This package was created with Cookiecutter_ and the 
 `audreyr/cookiecutter-pypackage`_ project template.
 
+.. _`Vauxoo`: https://www.vauxoo.com
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage

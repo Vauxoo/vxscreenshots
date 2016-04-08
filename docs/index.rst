@@ -6,17 +6,15 @@
 VXScreenshots
 =============
 
-Contents:
-
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
+   readme
    installation
    usage
    contributing
    authors
    history
-   readme
 
 Indices and tables
 ==================

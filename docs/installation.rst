@@ -5,13 +5,12 @@ Installation
 ============
 
 
-On Ubuntu.
-==========
+On Ubuntu 14.04.
+================
 
 At the command line::
 
-    $ sudo apt-get install python-pip \
-                           awscli
+    $ sudo apt-get install python-pip awscli
 
 Now install it from pip, isolated on your user.::
 
@@ -56,23 +55,31 @@ directories to be watched.::
 
 **Configuring**
 
-First set the folder you want to supervise in the **supervised** entry on the
-config file, the folder name should be you linux user in order to have some kid
-of order but if you use this in several machines at once it can be usefull set
-it manually also, the bucket is the name of the bucket itself configuring with
-a proper DNS entry in order to set the link properlly when sharing.::
+You will need to configure a little values.
+
+1. First set the folder you want to supervise in the **supervised** entry on the
+   config file.
+2. Secondly The folder name would be your linux user in order to have some kind
+   of order but if you use this in several machines at once this it should be
+   useful set it manually either, different per machine.
+3. The bucket is the name of the bucket itself configuring with a proper DNS
+   entry in order to set the link properly when sharing following amazon_ 
+   standards.::
 
     $ vim $HOME/.vxscreenshots/vxsscreenshots.ini
 
 **Let's test what we have**
+===========================
 
-This program is done with 2 daemons.:
+This program is done with 2 daemons and one script.:
 
-1. vxsswatcher: one which watch the folder configured with pictures and push 
-everything which is new/modified to s3, recording such information in the cache
-database
-2. vxssicon: which gives a graphical interface to allow you get some interesting
-links automatically into the clipboard and other fetures.
+1. **vxsswatcher**: one which watch the folder configured with pictures and push 
+    everything which is new/modified to s3, recording such information in the 
+    cache database.
+2. **vxssicon**: which gives a graphical interface to allow you get some 
+    interesting links automatically into the clipboard and other features.
+3. **screenshot.sh**: Script that runs your screenshot manager (shutter by 
+    default) and save a file with an proper aleatory name on a watched folder.
 
 Then open 2 bash consoles and run both again after you configured the amazon 
 key, then run both daemons, you should see something like this.
@@ -82,6 +89,14 @@ key, then run both daemons, you should see something like this.
     :alt: How desktop looks like
     :align: center
 
+Configuring Shutter alá Skitch:
+===============================
+
+Follow this_ instructions.
+
+
 
 .. _indicates: http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file
+.. _amazon: http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html
+.. _this: http://shutter-project.org/faq-help/set-shutter-as-the-default-screenshot-tool/
 
