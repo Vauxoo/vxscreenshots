@@ -10,13 +10,13 @@ On Ubuntu 14.04.
 
 At the command line::
 
-    $ sudo apt-get install python-pip awscli
+    $ sudo apt-get update && sudo apt-get -y install python-pip awscli shutter
 
-Now install it from pip, isolated on your user.::
+Now install it from pip, isolated on your user (recommended).::
 
-    $ pip install vxscreenshots --user
-    $ echo "export PATH=$PATH:$HOME/.local/bin/" >> $HOME/.bashrc
-    $ source $HOME/.bashrc
+    $ pip install vxscreenshots --user && \
+      echo "export PATH=\$PATH:$HOME/.local/bin" >> $HOME/.profile && \
+      source $HOME/.profile
 
 or with sudo.::
 
@@ -24,10 +24,11 @@ or with sudo.::
 
 Note::
 
-    Due to we created some helpers scripts ese sudo is a good idea, but you can
-    replace sud by --user
+    Due to we created some helpers scripts sudo is a good idea, but you can
+    use the --user option as mentioned before if you want all isolated in your
+    own user profile.
 
-Now run 2 tools in order of create all configuration files.::
+Now run 2 tools in order to create all configuration files.::
 
     $ vxssicon
 
@@ -37,11 +38,8 @@ Now run 2 tools in order of create all configuration files.::
 
     This should run normally ctrl+c to kill it.
 
-Checking your config setted::
-
-    $ vim ~/.vxscreenshots/vxscreenshots.ini
-
 **Now we need to set Amazon S3 Credenetials**.
+==============================================
 
 Before make a first example we need to set amazon credentials as boto3
 configuration `indicates`_. And set your parameters for bucket and local
@@ -66,12 +64,12 @@ You will need to configure a little values.
    entry in order to set the link properly when sharing following amazon_ 
    standards.::
 
-    $ vim $HOME/.vxscreenshots/vxsscreenshots.ini
+    $ gedit $HOME/.vxscreenshots/vxsscreenshots.ini
 
 **Let's test what we have**
 ===========================
 
-This program is done with 2 daemons and one script.:
+This program is composed by 2 daemons and one script.:
 
 1. **vxsswatcher**: one which watch the folder configured with pictures and push 
     everything which is new/modified to s3, recording such information in the 
@@ -89,8 +87,33 @@ key, then run both daemons, you should see something like this.
     :alt: How desktop looks like
     :align: center
 
-Configuring Shutter alá Skitch:
-===============================
+
+==============================
+Setting all to work toghether.
+==============================
+
+Install shutter.
+================
+
+Shutter is the most powerful screenshots manager in the Linux world, then we 
+will manage our screenshots with it.
+
+Install shutter (If you did not had it installed before)::
+
+    $ sudo apt-get install shutter
+
+Configure all services.
+=======================
+
+Execute the configuration options.
+
+    $ vxssicon --configure
+
+This will add all services at start sesion in order to avoid start everything 
+manually.
+
+Configure Shutter alá Skitch.
+-----------------------------
 
 Follow this_ instructions.
 
