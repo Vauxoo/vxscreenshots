@@ -3,7 +3,7 @@ sudo: required
 dist: trusty
 before_install:
 - sudo apt-get -qq update
-- sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-appindicator3-0.1 gir1.2-notify-0.7
+- sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-appindicator3-0.1 gir1.2-notify-0.7 python-coverage
   python-gi
 deploy:
   true:
