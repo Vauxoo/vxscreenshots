@@ -22,7 +22,7 @@ install: pip install -U tox
 language: python
 python: 2.7
 script:
-- make test
+- tox --sitepackages
 - make coverage
 sudo: required
 virtualenv:
