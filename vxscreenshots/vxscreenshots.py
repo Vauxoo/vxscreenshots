@@ -7,14 +7,16 @@ from gi.repository import Gdk as gdk
 from gi.repository import AppIndicator3 as appindicator
 from gi.repository import Notify as notify
 
+import click
 import json
-from urllib2 import Request, urlopen
-import signal
-from os.path import join, isdir, dirname
-from os import makedirs
-import sqlite3
 import logging
+import signal
+import sqlite3
+from os import makedirs
+from os.path import join, isdir, dirname
+from urllib2 import Request, urlopen
 from .config import read_config
+from .configure import Configure
 from contextlib import closing
 
 config = read_config()
@@ -173,7 +175,16 @@ class AppShareSmart(object):
                                 'Opening Folder on Explorer', None).show()
 
 
-def cli():
+@click.option('--configure', is_flag=True,
+              help='Configure autostart and shutter to work exactly as skitch. '
+              'Important: This will overwrite your autostart options')
+@click.command()
+def cli(configure):
+    '''Run icon to share and get cache shared images to S3
+    '''
+    if configure:
+        Configure().set_startup()
+        exit()
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     app = AppShareSmart('Shared on S3')
     app.run()

@@ -6,6 +6,7 @@ include README.rst
 include vxscreenshots/icon.svg
 
 recursive-include tests *
+recursive-include config/autostart/*.desktop
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
