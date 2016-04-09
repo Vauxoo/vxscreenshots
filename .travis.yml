@@ -5,6 +5,8 @@ before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-appindicator3-0.1 gir1.2-notify-0.7 python-coverage
   python-gi
+# Remove when trusty image is ready.
+- sudo apt-get install python-coverage
 deploy:
   true:
     condition: $TOXENV == py27
