@@ -27,7 +27,8 @@ language: python
 python: 2.7
 script:
 - tox --sitepackages
-- make coverage
+- coverage run --source vxscreenshots setup.py test
+- coverage report -m
 sudo: required
 virtualenv:
   system_site_packages: true
