@@ -58,7 +58,6 @@ setup(
     ],
     test_suite='tests',
     install_requires=install_requires,
-    tests_requirements=test_requirements,
     scripts=['bin/screenshot.sh'],
     entry_points='''
         [console_scripts]
