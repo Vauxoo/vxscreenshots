@@ -5,8 +5,8 @@ Installation
 ============
 
 
-On Ubuntu 14.04.
-================
+On Ubuntu 14.04 and 15.04.
+==========================
 
 At the command line::
 
@@ -56,8 +56,8 @@ directories to be watched.::
 You will need to configure a little values.
 
 1. First set the folder you want to supervise in the **supervised** entry on the
-   config file.
-2. Secondly The folder name would be your linux user in order to have some kind
+   configuration file.
+2. Secondly The folder name would be your Linux user in order to have some kind
    of order but if you use this in several machines at once this it should be
    useful set it manually either, different per machine.
 3. The bucket is the name of the bucket itself configuring with a proper DNS
@@ -88,17 +88,27 @@ key, then run both daemons, you should see something like this.
     :align: center
 
 
-==============================
-Setting all to work toghether.
-==============================
+=============================
+Setting all to work together.
+=============================
 
-Install shutter.
-================
+Install last version of shutter.
+================================
 
 Shutter is the most powerful screenshots manager in the Linux world, then we 
 will manage our screenshots with it.
 
-Install shutter (If you did not had it installed before)::
+You can add a PPA to your system with a single line in your terminal. Open a 
+terminal and enter::
+
+    $ sudo add-apt-repository ppa:shutter/ppa
+
+Now, as a one-off, you should tell your system to pull down the latest list of 
+software from each archive it knows about, including the PPA you just added::
+
+    $ sudo apt-get update
+
+Install Shutter.::
 
     $ sudo apt-get install shutter
 
@@ -109,7 +119,7 @@ Execute the configuration options.
 
     $ vxssicon --configure
 
-This will add all services at start sesion in order to avoid start everything 
+This will add all services at start session in order to avoid start everything 
 manually.
 
 Configure Shutter alá Skitch.

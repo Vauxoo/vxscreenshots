@@ -12,6 +12,14 @@ vxscreenshots.config module
     :undoc-members:
     :show-inheritance:
 
+vxscreenshots.configure module
+------------------------------
+
+.. automodule:: vxscreenshots.configure
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 vxscreenshots.vxscreenshots module
 ----------------------------------
 
