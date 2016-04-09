@@ -11,6 +11,8 @@ import json
 import logging
 import signal
 import sqlite3
+import subprocess
+import sys
 from os import makedirs
 from os.path import join, isdir, dirname
 from urllib2 import Request, urlopen
@@ -29,6 +31,7 @@ class AppShareSmart(object):
         self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
         self.format_logging()
         icon = join(dirname(__file__), 'icon.svg')
+        self.path = config.get('vxscreenshots.supervised')
         self.logger.info('Loading icon from %s ' % icon)
         self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
                                                     icon,
@@ -83,12 +86,11 @@ class AppShareSmart(object):
         item_last_md = gtk.MenuItem('Markdown')
         item_last_rst = gtk.MenuItem('rST')
         item_quit = gtk.MenuItem('Quit')
-        item_joke = gtk.MenuItem('Joke')
+        item_joke = gtk.MenuItem('Something about Chuck Norris')
         item_view = gtk.MenuItem('View in Folder')
         separator = gtk.SeparatorMenuItem()
         separator_m = gtk.SeparatorMenuItem()
         separator_q = gtk.SeparatorMenuItem()
-        item_run = gtk.MenuItem('Run Watcher')
         item_last_link.connect('activate', self.last_link)
         item_last_html.connect('activate', self.last_html)
         item_last_md.connect('activate', self.last_md)
@@ -96,7 +98,6 @@ class AppShareSmart(object):
         item_quit.connect('activate', self.quit)
         item_joke.connect('activate', self.joke)
         item_view.connect('activate', self.view_in_folder)
-        item_run.connect('activate', self.run_watcher)
         subMenu = gtk.Menu()
         subMenu.append(item_last_link)
         subMenu.append(item_last_html)
@@ -105,7 +106,6 @@ class AppShareSmart(object):
         item_last.set_submenu(subMenu)
         menu.append(item_last)
         menu.append(separator_m)
-        menu.append(item_run)
         menu.append(item_view)
         menu.append(separator)
         menu.append(item_joke)
@@ -130,7 +130,7 @@ class AppShareSmart(object):
         gtk.main()
 
     def joke(self, event):
-        notify.Notification.new("<b>Joke</b>", self.fetch_joke(), None).show()
+        notify.Notification.new("<b>Chuck\'s quote</b>", self.fetch_joke(), None).show()
 
     def clipboard(self, text):
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
@@ -172,8 +172,16 @@ class AppShareSmart(object):
                                 None).show()
 
     def view_in_folder(self, event):
-        notify.Notification.new("<b>Folder</b>",
-                                'Opening Folder on Explorer', None).show()
+        if sys.platform == 'darwin':
+            def openFolder(path):
+                subprocess.check_call(['open', path])
+        elif sys.platform == 'linux2':
+            def openFolder(path):
+                subprocess.check_call(['xdg-open', path])
+        elif sys.platform == 'win32':
+            def openFolder(path):
+                subprocess.check_call(['explorer', path])
+        openFolder(self.path)
 
 
 @click.option('--configure', is_flag=True,

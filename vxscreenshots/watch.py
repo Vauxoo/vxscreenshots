@@ -110,7 +110,7 @@ def start_watcher(path, handler):
 @click.command()
 def cli(path, bucket, folder):
     '''Watch a folder and push images automatically to amazon S3'''
-    event_handler = S3Element(bucket, folder)
+    event_handler = S3Element(bucket, folder, path)
     msg = 'Sending to this bucket %s %s %s' % (bucket, folder, path)
     event_handler.logger.info(msg)
     start_watcher(path, event_handler)
