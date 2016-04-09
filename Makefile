@@ -46,7 +46,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 vxscreenshots tests
+	flake8 vxscreenshots
 
 test:
 	python setup.py test
@@ -82,3 +82,18 @@ dist: clean
 
 install: clean
 	python setup.py install
+
+bumprelease: clean
+	tox  --sitepackages
+	bumpversion release
+	git push origin master --tags
+
+bumpminor: clean
+	tox  --sitepackages
+	bumpversion minor
+	git push origin master --tags
+
+bumppatch: clean
+	tox  --sitepackages
+	bumpversion patch
+	git push origin master --tags

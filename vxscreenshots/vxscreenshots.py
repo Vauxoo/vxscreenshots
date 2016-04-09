@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 import gi
-gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk as gtk
 from gi.repository import Gdk as gdk
 from gi.repository import AppIndicator3 as appindicator
@@ -12,6 +11,8 @@ import json
 import logging
 import signal
 import sqlite3
+import subprocess
+import sys
 from os import makedirs
 from os.path import join, isdir, dirname
 from urllib2 import Request, urlopen
@@ -19,21 +20,19 @@ from .config import read_config
 from .configure import Configure
 from contextlib import closing
 
+gi.require_version('Gtk', '3.0')
 config = read_config()
 
 
 class AppShareSmart(object):
+
     def __init__(self, indicator_id):
-        APPINDICATOR_ID = indicator_id
-        self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
+        self.indicator_id = indicator_id
+        self.ind_cat = appindicator.IndicatorCategory.OTHER
         self.format_logging()
-        icon = join(dirname(__file__), 'icon.svg')
-        self.logger.info('Loading icon from %s ' % icon)
-        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
-                                                    icon,
-                                                    self.ind_cat)
-        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-        self.indicator.set_menu(self.build_menu())
+        self.icon = join(dirname(__file__), 'icon.svg')
+        self.path = config.get('vxscreenshots.supervised')
+        self.logger.info('Loading icon from %s ' % self.icon)
         self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
@@ -43,7 +42,6 @@ class AppShareSmart(object):
             self.init_db()
         except Exception, e:
             self.logger.warning(e)
-        notify.init(APPINDICATOR_ID)
 
     def format_logging(self, log_level='INFO'):
         root = logging.getLogger()
@@ -82,12 +80,11 @@ class AppShareSmart(object):
         item_last_md = gtk.MenuItem('Markdown')
         item_last_rst = gtk.MenuItem('rST')
         item_quit = gtk.MenuItem('Quit')
-        item_joke = gtk.MenuItem('Joke')
+        item_joke = gtk.MenuItem('Something about Chuck Norris')
         item_view = gtk.MenuItem('View in Folder')
         separator = gtk.SeparatorMenuItem()
         separator_m = gtk.SeparatorMenuItem()
         separator_q = gtk.SeparatorMenuItem()
-        item_run = gtk.MenuItem('Run Watcher')
         item_last_link.connect('activate', self.last_link)
         item_last_html.connect('activate', self.last_html)
         item_last_md.connect('activate', self.last_md)
@@ -95,7 +92,6 @@ class AppShareSmart(object):
         item_quit.connect('activate', self.quit)
         item_joke.connect('activate', self.joke)
         item_view.connect('activate', self.view_in_folder)
-        item_run.connect('activate', self.run_watcher)
         subMenu = gtk.Menu()
         subMenu.append(item_last_link)
         subMenu.append(item_last_html)
@@ -104,7 +100,6 @@ class AppShareSmart(object):
         item_last.set_submenu(subMenu)
         menu.append(item_last)
         menu.append(separator_m)
-        menu.append(item_run)
         menu.append(item_view)
         menu.append(separator)
         menu.append(item_joke)
@@ -125,11 +120,17 @@ class AppShareSmart(object):
         gtk.main_quit()
 
     def run(self):
+        self.indicator = appindicator.Indicator.new(self.indicator_id,
+                                                    self.icon,
+                                                    self.ind_cat)
+        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+        self.indicator.set_menu(self.build_menu())
+        notify.init(self.indicator_id)
         self.logger.info('Serving db: %s' % self.db)
         gtk.main()
 
     def joke(self, event):
-        notify.Notification.new("<b>Joke</b>", self.fetch_joke(), None).show()
+        notify.Notification.new("<b>Chuck\'s quote</b>", self.fetch_joke(), None).show()
 
     def clipboard(self, text):
         clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
@@ -171,13 +172,21 @@ class AppShareSmart(object):
                                 None).show()
 
     def view_in_folder(self, event):
-        notify.Notification.new("<b>Folder</b>",
-                                'Opening Folder on Explorer', None).show()
+        if sys.platform == 'darwin':
+            def openFolder(path):
+                subprocess.check_call(['open', path])
+        elif sys.platform == 'linux2':
+            def openFolder(path):
+                subprocess.check_call(['xdg-open', path])
+        elif sys.platform == 'win32':
+            def openFolder(path):
+                subprocess.check_call(['explorer', path])
+        openFolder(self.path)
 
 
 @click.option('--configure', is_flag=True,
-              help='Configure autostart and shutter to work exactly as skitch. '
-              'Important: This will overwrite your autostart options')
+              help='Configure autostart and shutter to work exactly as skitch.'
+              ' Important: This will overwrite your autostart options')
 @click.command()
 def cli(configure):
     '''Run icon to share and get cache shared images to S3
