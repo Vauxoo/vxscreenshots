@@ -46,7 +46,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 vxscreenshots tests
+	flake8 vxscreenshots
 
 test:
 	python setup.py test

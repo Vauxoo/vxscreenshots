@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
-'''
-Following this strategy_ we simply go to the 
+'''Following this strategy_ we simply go to the 
 
-.. _strategy: http://askubuntu.com/questions/48321/how-do-i-start-applications-automatically-on-login
+.. _strategy: http://askubuntu.com/questions/48321/how-do-i-start-applications-automatically-on-login  # noqa
 '''
 from os.path import dirname, join, expanduser, isfile
 from os import listdir
@@ -10,7 +9,9 @@ from shutil import copy2
 
 HOME = expanduser("~")
 
+
 class Configure(object):
+
     def __init__(self):
         self.shutter = False
         self.vxssicon = False
@@ -22,7 +23,7 @@ class Configure(object):
         overwrite = False
         for o in listdir(origin):
             if isfile(join(dest, o)):
-                overwrite = raw_input('File %s already exists do you want ' 
+                overwrite = raw_input('File %s already exists do you want '
                                       'everwrite it? [Yy/Nn]' % join(dest, o))
                 if overwrite in ('Y', 'y', 'yes', 'YES'):
                     overwrite = True

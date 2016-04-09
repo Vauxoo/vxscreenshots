@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 import gi
-gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk as gtk
 from gi.repository import Gdk as gdk
 from gi.repository import AppIndicator3 as appindicator
@@ -19,10 +18,12 @@ from .config import read_config
 from .configure import Configure
 from contextlib import closing
 
+gi.require_version('Gtk', '3.0')
 config = read_config()
 
 
 class AppShareSmart(object):
+
     def __init__(self, indicator_id):
         APPINDICATOR_ID = indicator_id
         self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
@@ -176,8 +177,8 @@ class AppShareSmart(object):
 
 
 @click.option('--configure', is_flag=True,
-              help='Configure autostart and shutter to work exactly as skitch. '
-              'Important: This will overwrite your autostart options')
+              help='Configure autostart and shutter to work exactly as skitch.'
+              ' Important: This will overwrite your autostart options')
 @click.command()
 def cli(configure):
     '''Run icon to share and get cache shared images to S3

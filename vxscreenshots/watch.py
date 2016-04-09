@@ -50,16 +50,6 @@ class S3Element(LoggingEventHandler):
         return "http://{bucket}/{fname}".format(bucket=self.bucket,
                                                 fname=fname)
 
-    def init_db(self):
-        with closing(self.conn.cursor()) as cursor:
-            cursor.execute('''CREATE TABLE stock_images
-                                (path text,
-                                 url text,
-                                 synced boolean,
-                                 dt datetime default current_timestamp)
-                           ''')
-            cursor.commit()
-
     def on_modified(self, event):
         what = 'directory' if event.is_directory else 'file'
         self.send_to_s3(what, event)
@@ -68,7 +58,9 @@ class S3Element(LoggingEventHandler):
         def db_insert_new(images):
             conn = sqlite3.connect(self.db)
             with closing(conn.cursor()) as cursor:
-                cursor.executemany('INSERT INTO stock_images VALUES (?,?,?,CURRENT_TIMESTAMP)',
+                cursor.executemany('''INSERT INTO
+                                        stock_images VALUES
+                                    (?,?,?,CURRENT_TIMESTAMP)''',
                                    images)
                 conn.commit()
                 self.logger.warning('Inserted on db %s %s' % (event.src_path,
@@ -79,11 +71,6 @@ class S3Element(LoggingEventHandler):
         if what != 'directory' and \
            isfile(event.src_path) and \
            ext in self.valid_ext:
-            # Asume if running as a main script it is a dev mode
-            try:
-                self.init_db()
-            except Exception, e:
-                self.logger.warning(e)
             try:
                 s3 = boto3.resource('s3')
                 data = open(event.src_path, 'rb')
