@@ -20,4 +20,6 @@ replace = **unreleased**
 optional_value = gamma
 values =
 	dev
+	alpha
+	beta
 	gamma
