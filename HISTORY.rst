@@ -3,6 +3,11 @@ ChangeLog
 
 **unreleased**
 
+v2.6.3
+------
+
+* Preparing release management.
+
 v2.4.4
 ------
 
