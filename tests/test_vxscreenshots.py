@@ -32,7 +32,7 @@ class TestVxscreenshots(unittest.TestCase):
 
     def test_002_icon(self):
         appx = vxscreenshots.AppShareSmart('Name App')
-
+        pass
     def test_003_watch(self):
         s3 = watch.S3Element('test.example.com', 'nhomar')
 

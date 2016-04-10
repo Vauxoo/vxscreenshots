@@ -27,17 +27,12 @@ config = read_config()
 class AppShareSmart(object):
 
     def __init__(self, indicator_id):
-        APPINDICATOR_ID = indicator_id
-        self.ind_cat = appindicator.IndicatorCategory.SYSTEM_SERVICES
+        self.indicator_id = indicator_id
+        self.ind_cat = appindicator.IndicatorCategory.OTHER
         self.format_logging()
-        icon = join(dirname(__file__), 'icon.svg')
+        self.icon = join(dirname(__file__), 'icon.svg')
         self.path = config.get('vxscreenshots.supervised')
-        self.logger.info('Loading icon from %s ' % icon)
-        self.indicator = appindicator.Indicator.new(APPINDICATOR_ID,
-                                                    icon,
-                                                    self.ind_cat)
-        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-        self.indicator.set_menu(self.build_menu())
+        self.logger.info('Loading icon from %s ' % self.icon)
         self.db = config.get('vxscreenshots.database')
         if not isdir(dirname(self.db)):
             makedirs(dirname(self.db))
@@ -47,7 +42,6 @@ class AppShareSmart(object):
             self.init_db()
         except Exception, e:
             self.logger.warning(e)
-        notify.init(APPINDICATOR_ID)
 
     def format_logging(self, log_level='INFO'):
         root = logging.getLogger()
@@ -126,6 +120,12 @@ class AppShareSmart(object):
         gtk.main_quit()
 
     def run(self):
+        self.indicator = appindicator.Indicator.new(self.indicator_id,
+                                                    self.icon,
+                                                    self.ind_cat)
+        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+        self.indicator.set_menu(self.build_menu())
+        notify.init(self.indicator_id)
         self.logger.info('Serving db: %s' % self.db)
         gtk.main()
 
