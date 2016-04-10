@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 try:
     from setuptools import setup
 except ImportError:
@@ -31,7 +30,9 @@ except Exception, e:
 setup(
     name='vxscreenshots',
     version='2.6.12-alpha',
-    description="Basic Screenshots manager pushing and sharing automatically "
+    summary='vauxootools: Emmulate skitch on python and Linux with this set of'
+    ' preconfigured elements.',
+    description="vxscreenshots: Basic Screenshots manager pushing and sharing automatically "
                 "to Amazon S3 alá Skitch",
     long_description=readme + '\n\n' + history,
     author="Vauxoo OpenSource Specialists",
