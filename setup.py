@@ -29,7 +29,7 @@ except Exception, e:
 
 setup(
     name='vxscreenshots',
-    version='2.6.13-dev',
+    version='2.6.14-dev',
     summary='vxscreenshots: Emmulate skitch on python and Linux with this set '
     'of preconfigured elements.',
     description="vxscreenshots: Basic Screenshots manager pushing and sharing"
