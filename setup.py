@@ -30,22 +30,21 @@ except Exception, e:
 setup(
     name='vxscreenshots',
     version='2.6.12-alpha',
-    summary='vauxootools: Emmulate skitch on python and Linux with this set of'
-    ' preconfigured elements.',
-    description="vxscreenshots: Basic Screenshots manager pushing and sharing automatically "
-                "to Amazon S3 alá Skitch",
+    summary='vxscreenshots: Emmulate skitch on python and Linux with this set '
+    'of preconfigured elements.',
+    description="vxscreenshots: Basic Screenshots manager pushing and sharing"
+    " automatically to Amazon S3 alá Skitch",
     long_description=readme + '\n\n' + history,
     author="Vauxoo OpenSource Specialists",
     author_email='nhomar@vauxoo.com',
+    mantainer='Nhomar Hernández',
+    mantainer_email='nhomar@vauxoo.com',
     url='https://github.com/vauxoo/vxscreenshots',
     packages=[
         'vxscreenshots',
     ],
-    package_dir={'vxscreenshots':
-                 'vxscreenshots'},
+    package_dir={'vxscreenshots': 'vxscreenshots'},
     include_package_data=True,
-    license="ISCL",
-    zip_safe=False,
     keywords='vxscreenshots',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -57,9 +56,13 @@ setup(
         'Natural Language :: Spanish',
         'Programming Language :: Python :: 2.7',
     ],
+    licence=open('LICENSE').read(),
     test_suite='tests',
+    platform=['Linux'],
     install_requires=install_requires,
-    scripts=['bin/screenshot.sh'],
+    scripts=[
+        'bin/screenshot.sh',
+    ],
     entry_points='''
         [console_scripts]
         vxsswatcher=vxscreenshots.watch:cli
