@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-**unreleased**
+**unreleased** v2.6.3
 
 v2.4.4
 ------
