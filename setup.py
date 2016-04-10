@@ -30,7 +30,7 @@ except Exception, e:
 
 setup(
     name='vxscreenshots',
-    version='2.6.7-dev',
+    version='2.6.8-dev',
     description="Basic Screenshots manager pushing and sharing automatically "
                 "to Amazon S3 alá Skitch",
     long_description=readme + '\n\n' + history,
