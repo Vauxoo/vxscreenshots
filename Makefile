@@ -83,23 +83,17 @@ dist: clean
 install: clean
 	python setup.py install
 
-bumpminor: clean
-	tox  --sitepackages
-	bumpversion release
-	python setup.py sdist bdist_wheel upload
-	bumpversion --no-tag patch
-	git push origin master --tags
-
 bumprelease: clean
 	tox  --sitepackages
 	bumpversion release
-	python setup.py sdist bdist_wheel upload
-	bumpversion --no-tag patch
+	git push origin master --tags
+
+bumpminor: clean
+	tox  --sitepackages
+	bumpversion minor
 	git push origin master --tags
 
 bumppatch: clean
 	tox  --sitepackages
-	bumpversion release
-	python setup.py sdist bdist_wheel upload
-	bumpversion --no-tag patch
+	bumpversion patch
 	git push origin master --tags
