@@ -88,10 +88,6 @@ key, then run both daemons, you should see something like this.
     :align: center
 
 
-=============================
-Setting all to work together.
-=============================
-
 Install last version of shutter.
 ================================
 
@@ -122,12 +118,25 @@ Execute the configuration options.
 This will add all services at start session in order to avoid start everything 
 manually.
 
-Configure Shutter alá Skitch.
------------------------------
+Configure Shutter shortcuts alá Skitch.
+---------------------------------------
 
-Follow this_ instructions.
+* Go to keyboard configuration.
 
 
+.. image:: http://screenshots.vauxoo.com/oem/c8ebcf-403x318.png
+   :width: 400
+   :alt: alternate text
+
+
+* Set the proper values to run shutter.
+
+.. image:: http://screenshots.vauxoo.com/oem/81197c-931x552.png
+   :width: 400
+   :alt: alternate text
+
+* Now you can go to the :doc:`usage` section to see how enjoy the features just
+configured and installed.
 
 .. _indicates: http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file
 .. _amazon: http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html

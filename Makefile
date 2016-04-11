@@ -24,6 +24,10 @@ help:
 	@echo "release - package and upload a release"
 	@echo "dist - package"
 	@echo "install - install the package to the active Python's site-packages"
+	@echo "bumprelease - Make a simple release and push, travis will make public"
+	@echo "              all the other. i.e.: 2.2.2.dev - > 2.2.2.alpha 2.2.2.beta -> 2.2.3"
+	@echo "bumpminor - Increase a minor number 2.3.4 to 2.4.4"
+	@echo "bumppatch - Increase a minor simple patch 2.3.4. 2.3.5"
 
 clean: clean-build clean-pyc clean-test
 
@@ -72,6 +76,7 @@ servedocs: docs
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: clean
+	tox  --sitepackages
 	python setup.py sdist upload
 	python setup.py bdist_wheel upload
 
