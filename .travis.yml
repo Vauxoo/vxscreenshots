@@ -19,7 +19,7 @@ script:
 - coverage run --source vxscreenshots setup.py test
 - coverage report -m
 - cd docs
-- make deploy
+- make deploy -s
 
 env:
   global:
@@ -28,7 +28,7 @@ env:
     - GH_BRANCH=gh-pages
     - GH_COMMITER_EMAIL=cowardvasallwrite@vauxoo.com
     - GH_COMMITER_NAME="Travis Robot."
-    - secure: pbSsu6yrfPKNYD1B3a9lqdPYAOqGgSuBxmrMy9aEr1lpYRwIEZbdO22NZZOcb3k7tsN6RN1iFuCSerHvHCqqowGcbY8MaEiMivJgsNiJc1KxwbXpPF+Jet4KtXjwcaIvhlh9b1fW3FZ56MI/xLUnLxrgJRQcCvB8SA/gkYN0hCpKoi2n9z2K57rED9IuiTpAaygv/fW6zGwzvkZ6IuTaMVGtWxtzWOXqseX7LuGLPSxA8gGgOc5JrOh6IlHyYQ1hu67GUF6P2ptVFoK7MItlrlyEwo2/2v/TUbLNTmWAJld3dF57EEch6zhfV5QiYIan7HtY0JZSXum3bo5FI7R+mVG54+Amz9zOjYwUDpblI0UQVdGnCErXVoorB/FInK011EzXhJAd6NR8UQpj2X400c0S1y2CFNC2wTVexwKS44TTyrzfzKwjXL45Pz30kJvvUJdu9XACWhqaMnxS/rUVI/wtrATWn5swQYySMqgAtVCA/jO6iStaFy0f+1+EzTGvgg4XEEW7Ho51aUOVbd3BYbEY4J2M+EXVMQQam6bL4CKVZB2zjk8On5FDbIStQ+2mOdVDzosVw3cnByooTN3U5G4o8bioo61lXfIeGkYcMeC2m09cErCqEAcofZ2OiZVDPzfQDOT6JeyuRQVULudTLGKPhvL5Akvki3v3zUQ3eQA=
+    - secure: WX/g+Jt2hSWaZGApsUSb5byu5PYI9P2wcF+NNSw6fAeluZA+k7IAIXb2/dV7a+7OvDAalVJNK3vOFSxdyarVJ0/nWvGZ5uLtOZv1jkW5G6eTDKn9PAKyLJ62NACTvaJboRgdG6Kz+RN7dHPEOt1AKDgH+tvYZTcdK4nUJKVV8vuSHdrYRY1G4jOvCHeEN45WrhPx/at9T7m8ZI7cOav2DxqMuw758wLkYN0qWPKwrs4Ro1WXNxVzmDVdl4oyvyZa/uFK8UMwgg+nBUM/V2902YVbj/Erlsovfya3M4pCSiYSmNsjVzy1Yd5b+aezIyfrNVBez/uieuL4dDptYAykxrHJ8c9+Pjt+e7XJ7eRbay0wSRQTqJ88tfoUfwefidaq1T35nS4Rx2kEmxY4hE/ibWCpo+UHYisAnM7XRwNCawGT7pxyiCrN+DBZ5MEydEiy9h+Eg4EQjvtvqbC5Uw3Cf6X/PosWxfDqv01ccud6Nd/kdkATtuL31bpBCmmviPbY/iDV3h+Ng7pGEp8adhW9QfUeZb7u2cNZ1Eja9HYkdidUzAoHTz7G7EicDo69MFnKn7Mtc7N/onIQqyT4lBWDGW2HJhdeRJKrcCt91QNNPUKUQ02adKVp258UNKZxTfRzVq+XkMbxgD3ATL5+SBKrbY0impFWrpH+MN4iNHUL5H4=
 deploy:
   true:
     condition: $TOXENV == py27
