@@ -111,6 +111,14 @@
 <h4 class="h4-padleft">Table of Content</h4>
   <ul class="localtoc"><ul>
 <li><a class="reference internal" href="#">VXScreenshots</a></li>
+<li><a class="reference internal" href="#about">About</a><ul>
+<li><a class="reference internal" href="#what-is-vxscreenshots">What is VXScreenshots?.</a></li>
+<li><a class="reference internal" href="#why">Why?.</a></li>
+<li><a class="reference internal" href="#see-a-little-demonstration-of-what-you-can-do">See a little demonstration of what you can do.</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#where-find-more-information">Where find more information?</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </ul>
@@ -141,6 +149,62 @@
       
   <div class="section" id="vxscreenshots">
 <h1>VXScreenshots<a class="headerlink" href="#vxscreenshots" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/vxscreenshots"><img src="https://img.shields.io/pypi/v/vxscreenshots.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/Vauxoo/vxscreenshots"><img alt="https://travis-ci.org/Vauxoo/vxscreenshots.svg?branch=master" src="https://travis-ci.org/Vauxoo/vxscreenshots.svg?branch=master" /></a>
+<div class="section" id="what-is-vxscreenshots">
+<h2>What is VXScreenshots?.<a class="headerlink" href="#what-is-vxscreenshots" title="Permalink to this headline">¶</a></h2>
+<p>Basic Screenshots manager pushing and sharing automatically to Amazon S3 images
+and giving the link automatically to use them alá Skitch autoconfiguring your
+Linux desktop environment with shutter properlly.</p>
+<p>This is a combination of tools Not a tool itself to have your Linux taking fast
+Screenshots.</p>
+</div>
+<div class="section" id="why">
+<h2>Why?.<a class="headerlink" href="#why" title="Permalink to this headline">¶</a></h2>
+<p>When you look for an alternative to <a class="reference external" href="https://evernote.com/skitch/">Skitch</a>, an
+<a class="reference external" href="https://evernote.com/">evernote</a> extension which is
+pretty cool everybody mentioned <a class="reference external" href="http://shutter-project.org/">Shutter</a>
+as the <a class="reference external" href="http://askubuntu.com/questions/6558/what-screenshot-tools-are-available">best screenshot tool</a>
+on Linux (which is true) but it needs a lot of investigation and configurations to
+automate an important feature &#8216;&#8216;&#8220;Take the screenshot, edit it and sync it
+inmediatly with access with a direct link to embed it properlly&#8221;&#8217;&#8216;, even if this tool
+has some <strong>upload features</strong> they are full of marketing and noisy, with this
+little set of helpers in python, you can have your own server of images in
+Amazon s3 and preconfigure everything to work our of the box.</p>
+</div>
+<div class="section" id="see-a-little-demonstration-of-what-you-can-do">
+<h2>See a little demonstration of what you can do.<a class="headerlink" href="#see-a-little-demonstration-of-what-you-can-do" title="Permalink to this headline">¶</a></h2>
+<a class="reference external image-reference" href="https://youtube.com/vauxoomedia"><img alt="http://www.trend247.net/ico/play_video.png" class="align-center" src="http://www.trend247.net/ico/play_video.png" /></a>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Monitorize a folder and verify if you put an image there (png, jpeg, jpg, gif)
+the it is pushed automatically to your account on amazon S3.</li>
+<li>Automatically create an index of <strong>shared</strong> files which you can get directly
+into the clipboard.</li>
+<li>Button to manage this behavior graphically avoiding go to the folder and make
+magic to get a shareable link.<ul>
+<li>Direct Link.</li>
+<li>RST Code.</li>
+<li>Html Code.</li>
+<li>Markdown Code.</li>
+</ul>
+</li>
+<li>Helper script to run your favorite screenshots manager app.</li>
+</ul>
+</div>
+<div class="section" id="where-find-more-information">
+<h2>Where find more information?<a class="headerlink" href="#where-find-more-information" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://vauxoo.github.io/vxscreenshots">Documentation</a>.</li>
+<li><a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>.</li>
+<li><a class="reference external" href="https://github.com/vauxoo/vxscreenshots">Source code</a>.</li>
+<li>Commercial support and services at <a class="reference external" href="https://www.vauxoo.com">Vauxoo</a>.</li>
+</ul>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="readme.html">About</a></li>
@@ -149,7 +213,9 @@
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="history.html">ChangeLog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Configuring Amazon S3.</a></li>
 </ul>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">

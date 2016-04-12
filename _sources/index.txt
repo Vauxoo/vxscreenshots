@@ -6,6 +6,8 @@
 VXScreenshots
 =============
 
+.. include:: ../README.rst
+
 .. toctree::
    :maxdepth: 1
 
@@ -15,6 +17,7 @@ VXScreenshots
    contributing
    authors
    history
+   server
 
 Indices and tables
 ==================
