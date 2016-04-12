@@ -75,6 +75,7 @@ push-gh-pages:
 	@echo "Succesfully pushed"
 
 deploy:
+	pip install -Ur requirements_doc.txt
 	test -d $(BUILDDIR)/travis && $(MAKE) pull-gh-pages || $(MAKE) clone-gh-pages
 	$(MAKE) html-es
 	touch $(BUILDDIR)/travis/.nojekyll;
