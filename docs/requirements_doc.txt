@@ -1,2 +1,2 @@
 sphinx>=1.2.1
-sphinx-intl
+# sphinx-intl

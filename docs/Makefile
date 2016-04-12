@@ -77,7 +77,7 @@ push-gh-pages:
 deploy:
 	pip install -Ur requirements_doc.txt
 	test -d $(BUILDDIR)/travis && $(MAKE) pull-gh-pages || $(MAKE) clone-gh-pages
-	$(MAKE) html-es
+	$(MAKE) html
 	touch $(BUILDDIR)/travis/.nojekyll;
 	rsync -rv --exclude=.git $(BUILDDIR)/html/* $(BUILDDIR)/travis/
 	$(if $(findstring @,$(GIT_SETTED)), @echo 'Using global parameters already Setted', $(MAKE) set-travis-git-config)
