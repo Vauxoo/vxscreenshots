@@ -25,8 +25,8 @@ When you look for an alternative to `Skitch <https://evernote.com/skitch/>`_, an
 pretty cool everybody mentioned `Shutter <http://shutter-project.org/>`_ 
 as the `best screenshot tool <http://askubuntu.com/questions/6558/what-screenshot-tools-are-available>`_
 on Linux (which is true) but it needs a lot of investigation and configurations to
-automate an important feature ''"Take the screenshot, edit it and sync it
-inmediatly with access with a direct link to embed it properlly"'', even if this tool
+automate an important feature **Take the screenshot, edit it and sync it
+inmediatly with access with a direct link to embed it properlly**, even if this tool
 has some **upload features** they are full of marketing and noisy, with this
 little set of helpers in python, you can have your own server of images in
 Amazon s3 and preconfigure everything to work our of the box.
@@ -58,8 +58,8 @@ Features
 Where find more information?
 ----------------------------
 
-* `Documentation <https://vauxoo.github.io/vxscreenshots>`_.
-* :doc:`installation`.
-* `Source code <https://github.com/vauxoo/vxscreenshots>`_.
+* `Documentation <http://vauxoo.github.io/vxscreenshots>`_.
+* `Installation <http://vauxoo.github.io/vxscreenshots/installation.html>`_.
+* `Source code <http://github.com/vauxoo/vxscreenshots>`_.
 * Commercial support and services at `Vauxoo <https://www.vauxoo.com>`_.
 
