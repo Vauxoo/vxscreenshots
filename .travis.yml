@@ -19,7 +19,7 @@ script:
 - coverage run --source vxscreenshots setup.py test
 - coverage report -m
 - cd docs
-- make deploy -s
+- make deploy
 
 env:
   global:
