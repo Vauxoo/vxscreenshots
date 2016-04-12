@@ -136,7 +136,7 @@ Configure Shutter shortcuts alá Skitch.
    :alt: alternate text
 
 * Now you can go to the :doc:`usage` section to see how enjoy the features just
-configured and installed.
+  configured and installed.
 
 Now just restart the graphical sesion (logout and login) or simply restart your
 PC yo see how all is working since the start.
