@@ -138,6 +138,9 @@ Configure Shutter shortcuts alá Skitch.
 * Now you can go to the :doc:`usage` section to see how enjoy the features just
 configured and installed.
 
+Now just restart the graphical sesion (logout and login) or simply restart your
+PC yo see how all is working since the start.
+
 .. _indicates: http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file
 .. _amazon: http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html
 .. _this: http://shutter-project.org/faq-help/set-shutter-as-the-default-screenshot-tool/
