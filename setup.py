@@ -56,7 +56,7 @@ setup(
     ],
     license=open('LICENSE').read(),
     test_suite='tests',
-    platform=['Linux'],
+    platforms=['Linux'],
     install_requires=install_requires,
     scripts=[
         'bin/screenshot.sh',
