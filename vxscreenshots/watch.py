@@ -13,6 +13,8 @@ from watchdog.events import LoggingEventHandler
 from .config import read_config
 from contextlib import closing
 
+__version__ = '2.6.18'
+
 config = read_config()
 
 
@@ -101,13 +103,22 @@ def start_watcher(path, handler):
     observer.join()
 
 
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(__version__)
+    ctx.exit()
+
+
+@click.command()
 @click.option('--path', default=config.get('vxscreenshots.supervised'),
               help='Path to be supervised')
 @click.option('--bucket', default=config.get('vxscreenshots.bucket_name'),
               help='Bucket where things will be saved to')
 @click.option('--folder', default=config.get('vxscreenshots.folder'),
               help='Inside the bucket how the folder will be named')
-@click.command()
+@click.option('--version', is_flag=True, callback=print_version,
+              expose_value=False, is_eager=True)
 def cli(path, bucket, folder):
     '''Watch a folder and push images automatically to amazon S3'''
     event_handler = S3Element(bucket, folder)

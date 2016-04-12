@@ -20,6 +20,8 @@ from .config import read_config
 from .configure import Configure
 from contextlib import closing
 
+__version__ = '2.6.18'
+
 gi.require_version('Gtk', '3.0')
 config = read_config()
 
@@ -184,10 +186,19 @@ class AppShareSmart(object):
         openFolder(self.path)
 
 
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(__version__)
+    ctx.exit()
+
+
+@click.command()
 @click.option('--configure', is_flag=True,
               help='Configure autostart and shutter to work exactly as skitch.'
               ' Important: This will overwrite your autostart options')
-@click.command()
+@click.option('--version', is_flag=True, callback=print_version,
+              expose_value=False, is_eager=True)
 def cli(configure):
     '''Run icon to share and get cache shared images to S3
     '''
