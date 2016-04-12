@@ -1,0 +1,349 @@
+
+  
+  
+ 
+  
+ 
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>vxscreenshots.vxscreenshots &mdash; vxscreenshots 2.6.14-dev documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://nhomar.github.io/theme/css/bootstrap.vauxoo.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.6.14-dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="vxscreenshots 2.6.14-dev documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex" />
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="bs3 navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+        <!--TODO: This should be taken from the configuration properly
+        -->
+            <img src="_static/logo_vauxoo.svg" width="140px"/>
+        </a>
+      </div>
+
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              
+              
+            
+            
+            
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li class="divider-vertical"></li>
+            
+              
+                
+              
+            
+          </ul>
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+    </div>
+  </div>
+
+<div class="bs3 bs3-form-bg">
+<div class="bgvauxoo bg-fixed">
+</div>
+<div style="background:transparent;">
+<div class="container">
+  <div class="row">
+    
+      <div class="col-md-3">
+        <div id="sidebar" class="nav bs-sidenav">
+          
+          <li>
+<h4 class="h4-padleft">Table of Content</h4>
+  <ul class="localtoc"></ul>
+<h4 class="h4-padleft">This Page</h4>
+ <ul class="localtoc">
+    <ul class="nav">
+     <li></li>
+</ul>
+</ul>
+</li>
+        </div>
+      </div>
+    
+    <div class="col-md-9">
+      
+  <h1>Source code for vxscreenshots.vxscreenshots</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="kn">import</span> <span class="nn">gi</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span> <span class="k">as</span> <span class="n">gtk</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gdk</span> <span class="k">as</span> <span class="n">gdk</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">AppIndicator3</span> <span class="k">as</span> <span class="n">appindicator</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Notify</span> <span class="k">as</span> <span class="n">notify</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">makedirs</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span><span class="p">,</span> <span class="n">dirname</span>
+<span class="kn">from</span> <span class="nn">urllib2</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">read_config</span>
+<span class="kn">from</span> <span class="nn">.configure</span> <span class="kn">import</span> <span class="n">Configure</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
+
+<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">read_config</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="AppShareSmart"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart">[docs]</a><span class="k">class</span> <span class="nc">AppShareSmart</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indicator_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicator_id</span> <span class="o">=</span> <span class="n">indicator_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ind_cat</span> <span class="o">=</span> <span class="n">appindicator</span><span class="o">.</span><span class="n">IndicatorCategory</span><span class="o">.</span><span class="n">OTHER</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format_logging</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s1">&#39;icon.svg&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vxscreenshots.supervised&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading icon from </span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vxscreenshots.database&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)):</span>
+            <span class="n">makedirs</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init_db</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AppShareSmart.format_logging"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.format_logging">[docs]</a>    <span class="k">def</span> <span class="nf">format_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="s1">&#39;INFO&#39;</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+                <span class="n">root</span><span class="o">.</span><span class="n">removeHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">: </span><span class="si">%(name)s</span><span class="s1">: &#39;</span>
+                                    <span class="s1">&#39;</span><span class="si">%(levelname)s</span><span class="s1">: </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                                    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.init_db"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.init_db">[docs]</a>    <span class="k">def</span> <span class="nf">init_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">())</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;CREATE TABLE stock_images</span>
+<span class="s1">                                    (path text,</span>
+<span class="s1">                                     url text,</span>
+<span class="s1">                                     synced boolean,</span>
+<span class="s1">                                     dt datetime default current_timestamp)</span>
+<span class="s1">                           &#39;&#39;&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.get_last_three"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.get_last_three">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_three</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">())</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">elements</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;SELECT * FROM stock_images</span>
+<span class="s1">                                         ORDER BY dt desc</span>
+<span class="s1">                                         LIMIT 3</span>
+<span class="s1">                                      &#39;&#39;&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">elements</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.build_menu"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.build_menu">[docs]</a>    <span class="k">def</span> <span class="nf">build_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">Menu</span><span class="p">()</span>
+        <span class="n">item_last</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;Get Image code Last Item&#39;</span><span class="p">)</span>
+        <span class="n">item_last_link</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;Direct Link&#39;</span><span class="p">)</span>
+        <span class="n">item_last_html</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;Html&#39;</span><span class="p">)</span>
+        <span class="n">item_last_md</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;Markdown&#39;</span><span class="p">)</span>
+        <span class="n">item_last_rst</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;rST&#39;</span><span class="p">)</span>
+        <span class="n">item_quit</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;Quit&#39;</span><span class="p">)</span>
+        <span class="n">item_joke</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;Something about Chuck Norris&#39;</span><span class="p">)</span>
+        <span class="n">item_view</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">(</span><span class="s1">&#39;View in Folder&#39;</span><span class="p">)</span>
+        <span class="n">separator</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">SeparatorMenuItem</span><span class="p">()</span>
+        <span class="n">separator_m</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">SeparatorMenuItem</span><span class="p">()</span>
+        <span class="n">separator_q</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">SeparatorMenuItem</span><span class="p">()</span>
+        <span class="n">item_last_link</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_link</span><span class="p">)</span>
+        <span class="n">item_last_html</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_html</span><span class="p">)</span>
+        <span class="n">item_last_md</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_md</span><span class="p">)</span>
+        <span class="n">item_last_rst</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_rst</span><span class="p">)</span>
+        <span class="n">item_quit</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
+        <span class="n">item_joke</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joke</span><span class="p">)</span>
+        <span class="n">item_view</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;activate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_in_folder</span><span class="p">)</span>
+        <span class="n">subMenu</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">Menu</span><span class="p">()</span>
+        <span class="n">subMenu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_last_link</span><span class="p">)</span>
+        <span class="n">subMenu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_last_html</span><span class="p">)</span>
+        <span class="n">subMenu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_last_md</span><span class="p">)</span>
+        <span class="n">subMenu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_last_rst</span><span class="p">)</span>
+        <span class="n">item_last</span><span class="o">.</span><span class="n">set_submenu</span><span class="p">(</span><span class="n">subMenu</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_last</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">separator_m</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_view</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_joke</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">separator_q</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_quit</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">show_all</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">menu</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.fetch_joke"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.fetch_joke">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_joke</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Downloading joek this method is just for Test.&#39;&#39;&#39;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s1">&#39;http://api.icndb.com/jokes/random?limitTo=[nerdy]&#39;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">joke</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">())[</span><span class="s1">&#39;value&#39;</span><span class="p">][</span><span class="s1">&#39;joke&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">joke</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.quit"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.quit">[docs]</a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="n">notify</span><span class="o">.</span><span class="n">uninit</span><span class="p">()</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.run"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicator</span> <span class="o">=</span> <span class="n">appindicator</span><span class="o">.</span><span class="n">Indicator</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_id</span><span class="p">,</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">,</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">ind_cat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicator</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">appindicator</span><span class="o">.</span><span class="n">IndicatorStatus</span><span class="o">.</span><span class="n">ACTIVE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indicator</span><span class="o">.</span><span class="n">set_menu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_menu</span><span class="p">())</span>
+        <span class="n">notify</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Serving db: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.joke"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.joke">[docs]</a>    <span class="k">def</span> <span class="nf">joke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">notify</span><span class="o">.</span><span class="n">Notification</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Chuck</span><span class="se">\&#39;</span><span class="s2">s quote&lt;/b&gt;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_joke</span><span class="p">(),</span> <span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.clipboard"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.clipboard">[docs]</a>    <span class="k">def</span> <span class="nf">clipboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">clipboard</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">Clipboard</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gdk</span><span class="o">.</span><span class="n">SELECTION_CLIPBOARD</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">clipboard</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Copied to clipboard </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span> <span class="ow">or</span> <span class="s1">&#39;No Image posted yet&#39;</span><span class="p">)</span>
+        <span class="n">notify</span><span class="o">.</span><span class="n">Notification</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;Copied&lt;/b&gt;&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.last_link"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.last_link">[docs]</a>    <span class="k">def</span> <span class="nf">last_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clipboard</span><span class="p">(</span><span class="n">link</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.last_html"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.last_html">[docs]</a>    <span class="k">def</span> <span class="nf">last_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clipboard</span><span class="p">(</span><span class="s1">&#39;&lt;img src=&quot;</span><span class="si">%s</span><span class="s1">&quot; width=auto&gt;&lt;/img&gt;&#39;</span> <span class="o">%</span> <span class="n">link</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.last_md"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.last_md">[docs]</a>    <span class="k">def</span> <span class="nf">last_md</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clipboard</span><span class="p">(</span><span class="s1">&#39;![](</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">link</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.last_rst"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.last_rst">[docs]</a>    <span class="k">def</span> <span class="nf">last_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clipboard</span><span class="p">(</span><span class="s1">&#39;&#39;</span>
+                       <span class="s1">&#39;.. image:: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>
+                       <span class="s1">&#39;   :height: 100</span><span class="se">\n</span><span class="s1">&#39;</span>
+                       <span class="s1">&#39;   :width: 100</span><span class="se">\n</span><span class="s1">&#39;</span>
+                       <span class="s1">&#39;   :scale: 100</span><span class="se">\n</span><span class="s1">&#39;</span>
+                       <span class="s1">&#39;   :alt: alternate text&#39;</span> <span class="o">%</span> <span class="n">link</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.last"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.last">[docs]</a>    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">three</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_last_three</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">three</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">three</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.run_watcher"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.run_watcher">[docs]</a>    <span class="k">def</span> <span class="nf">run_watcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">notify</span><span class="o">.</span><span class="n">Notification</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Watcher is running&lt;/b&gt;&quot;</span><span class="p">,</span>
+                                <span class="s1">&#39;Running screenshot.sh script and sending </span><span class="se">\n</span><span class="s1">&#39;</span>
+                                <span class="s1">&#39;screenshots to configured watched image....&#39;</span><span class="p">,</span>
+                                <span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AppShareSmart.view_in_folder"><a class="viewcode-back" href="../../vxscreenshots.html#vxscreenshots.vxscreenshots.AppShareSmart.view_in_folder">[docs]</a>    <span class="k">def</span> <span class="nf">view_in_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;darwin&#39;</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">openFolder</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;linux2&#39;</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">openFolder</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;xdg-open&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">&#39;win32&#39;</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">openFolder</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;explorer&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">])</span>
+        <span class="n">openFolder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div></div>
+
+
+<span class="nd">@click.option</span><span class="p">(</span><span class="s1">&#39;--configure&#39;</span><span class="p">,</span> <span class="n">is_flag</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+              <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Configure autostart and shutter to work exactly as skitch.&#39;</span>
+              <span class="s1">&#39; Important: This will overwrite your autostart options&#39;</span><span class="p">)</span>
+<span class="nd">@click.command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">cli</span><span class="p">(</span><span class="n">configure</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Run icon to share and get cache shared images to S3</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">configure</span><span class="p">:</span>
+        <span class="n">Configure</span><span class="p">()</span><span class="o">.</span><span class="n">set_startup</span><span class="p">()</span>
+        <span class="nb">exit</span><span class="p">()</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">AppShareSmart</span><span class="p">(</span><span class="s1">&#39;Shared on S3&#39;</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">cli</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+</div>
+</div>
+<footer class="footer">
+  <div class="bs3">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#" id="gototop">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2016, Vauxoo OpenSource Specialists.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.<br/>
+    </p>
+  </div>
+  </div>
+</footer>
+  </body>
+</html>

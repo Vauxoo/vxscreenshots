@@ -13,7 +13,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>VXScreenshots &mdash; vxscreenshots 2.6.14-dev documentation</title>
+    <title>Search &mdash; vxscreenshots 2.6.14-dev documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -32,17 +32,22 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
     <script type="text/javascript" src="_static/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="vxscreenshots 2.6.14-dev documentation" href="#" />
-    <link rel="next" title="About" href="readme.html" />
+    <link rel="top" title="vxscreenshots 2.6.14-dev documentation" href="index.html" />
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="robots" content="noindex" />
+
 
   </head>
   <body role="document">
@@ -56,7 +61,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.html">
         <!--TODO: This should be taken from the configuration properly
         -->
             <img src="_static/logo_vauxoo.svg" width="140px"/>
@@ -79,20 +84,11 @@
             
               
                 
-  <li><a href="readme.html"
-         title="Next Chapter: About">Next &raquo;</a></li>
               
             
           </ul>
           
             
-<form class="navbar-form navbar-right" action="search.html" method="get">
- <div class="form-group">
-  <input type="text" name="q" class="form-control" placeholder="Search" />
- </div>
-  <input type="hidden" name="check_keywords" value="yes" />
-  <input type="hidden" name="area" value="default" />
-</form>
           
     </div>
   </div>
@@ -109,28 +105,11 @@
           
           <li>
 <h4 class="h4-padleft">Table of Content</h4>
-  <ul class="localtoc"><ul>
-<li><a class="reference internal" href="#">VXScreenshots</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-</ul>
-<h4 class="h4-padleft">Next Topic</h4>
-  <ul class="localtoc">
-    <ul class="nav">
-    <li>
-    <a href="readme.html"
-         class="reference internal"
-         title="Next Chapter: About">About</a>
-    </li>
-  </ul>
-</ul>
+  <ul class="localtoc"></ul>
 <h4 class="h4-padleft">This Page</h4>
  <ul class="localtoc">
     <ul class="nav">
-     <li>
-  <a href="_sources/index.txt"
-     class="reference internal"
-     rel="nofollow">Show Source</a></li>
+     <li></li>
 </ul>
 </ul>
 </li>
@@ -139,28 +118,31 @@
     
     <div class="col-md-9">
       
-  <div class="section" id="vxscreenshots">
-<h1>VXScreenshots<a class="headerlink" href="#vxscreenshots" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="readme.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
-<li class="toctree-l1"><a class="reference internal" href="history.html">ChangeLog</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
-</ul>
-</div>
+  <h1 id="search-documentation">Search</h1>
+  <div id="fallback" class="admonition warning">
+  <script type="text/javascript">$('#fallback').hide();</script>
+  <p>
+    Please activate JavaScript to enable the search
+    functionality.
+  </p>
+  </div>
+  <p>
+    From here you can search these documents. Enter your search
+    words into the box below and click "search". Note that the search
+    function will automatically search for all of the words. Pages
+    containing fewer words won't appear in the result list.
+  </p>
 
+  <form class="form-search" action="" method="get">
+    <input type="text" name="q" class="input-medium search-query">
+    <button type="submit" class="btn">search</button>
+    <span id="search-progress" style="padding-left: 10px"></span>
+  </form>
+
+  
+  <div id="search-results">
+  
+  </div>
 
     </div>
       
