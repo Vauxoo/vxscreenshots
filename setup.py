@@ -30,15 +30,13 @@ except Exception, e:
 setup(
     name='vxscreenshots',
     version='2.6.14-dev',
-    summary='vxscreenshots: Emmulate skitch on python and Linux with this set '
-    'of preconfigured elements.',
     description="vxscreenshots: Basic Screenshots manager pushing and sharing"
     " automatically to Amazon S3 alá Skitch",
     long_description=readme + '\n\n' + history,
     author="Vauxoo OpenSource Specialists",
     author_email='nhomar@vauxoo.com',
-    mantainer='Nhomar Hernández',
-    mantainer_email='nhomar@vauxoo.com',
+    maintainer='Nhomar Hernández',
+    maintainer_email='nhomar@vauxoo.com',
     url='https://github.com/vauxoo/vxscreenshots',
     packages=[
         'vxscreenshots',
@@ -56,7 +54,7 @@ setup(
         'Natural Language :: Spanish',
         'Programming Language :: Python :: 2.7',
     ],
-    licence=open('LICENSE').read(),
+    license=open('LICENSE').read(),
     test_suite='tests',
     platform=['Linux'],
     install_requires=install_requires,
