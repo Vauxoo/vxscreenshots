@@ -13,7 +13,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Installation &mdash; vxscreenshots 2.6.20 documentation</title>
+    <title>Installation &#8212; vxscreenshots 2.6.19 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -23,10 +23,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.6.20',
+        VERSION:     '2.6.19',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -36,7 +37,8 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="vxscreenshots 2.6.20 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="About" href="readme.html" />
 <meta charset='utf-8'>
@@ -150,7 +152,7 @@
  <ul class="localtoc">
     <ul class="nav">
      <li>
-  <a href="_sources/installation.txt"
+  <a href="_sources/installation.rst.txt"
      class="reference internal"
      rel="nofollow">Show Source</a></li>
 </ul>
@@ -187,14 +189,18 @@ own user profile.
 </div>
 <p>Now run 2 tools in order to create all configuration files.:</p>
 <div class="highlight-shell"><div class="highlight"><pre><span></span>$ vxssicon
-
-This should run normally ctrl+c to <span class="nb">kill</span> it.
-
-$ vxsswatcher
-
-This should run normally ctrl+c to <span class="nb">kill</span> it.
 </pre></div>
 </div>
+<dl class="docutils">
+<dt>Note:</dt>
+<dd><p class="first">On gnome shell you will need this package <a class="reference external" href="https://extensions.gnome.org/extension/615/appindicator-support/">extra</a>.</p>
+<blockquote class="last">
+<div><p>This should run normally ctrl+c to kill it.</p>
+<p>$ vxsswatcher</p>
+<p>This should run normally ctrl+c to kill it.</p>
+</div></blockquote>
+</dd>
+</dl>
 </div>
 <div class="section" id="now-we-need-to-set-amazon-s3-credenetials">
 <h2><strong>Now we need to set Amazon S3 Credenetials</strong>.<a class="headerlink" href="#now-we-need-to-set-amazon-s3-credenetials" title="Permalink to this headline">¶</a></h2>
@@ -230,24 +236,21 @@ standards.:</p>
 <div class="section" id="let-s-test-what-we-have">
 <h2><strong>Let&#8217;s test what we have</strong><a class="headerlink" href="#let-s-test-what-we-have" title="Permalink to this headline">¶</a></h2>
 <p>This program is composed by 2 daemons and one script.:</p>
-<ol class="arabic">
+<ol class="arabic simple">
 <li><dl class="first docutils">
 <dt><strong>vxsswatcher</strong>: one which watch the folder configured with pictures and push</dt>
-<dd><p class="first last">everything which is new/modified to s3, recording such information in the
-cache database.</p>
-</dd>
+<dd>everything which is new/modified to s3, recording such information in the
+cache database.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><strong>vxssicon</strong>: which gives a graphical interface to allow you get some</dt>
-<dd><p class="first last">interesting links automatically into the clipboard and other features.</p>
-</dd>
+<dd>interesting links automatically into the clipboard and other features.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><strong>screenshot.sh</strong>: Script that runs your screenshot manager (shutter by</dt>
-<dd><p class="first last">default) and save a file with an proper aleatory name on a watched folder.</p>
-</dd>
+<dd>default) and save a file with an proper aleatory name on a watched folder.</dd>
 </dl>
 </li>
 </ol>
@@ -317,7 +320,7 @@ PC yo see how all is working since the start.</p>
     </p>
     <p>
         &copy; Copyright 2016, Vauxoo OpenSource Specialists.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.1.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.<br/>
     </p>
   </div>
   </div>
