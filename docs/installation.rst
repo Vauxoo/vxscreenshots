@@ -31,6 +31,9 @@ Note::
 Now run 2 tools in order to create all configuration files.::
 
     $ vxssicon
+    
+Note:
+   On gnome shell you will need this package extra_.
 
     This should run normally ctrl+c to kill it.
 
@@ -144,4 +147,4 @@ PC yo see how all is working since the start.
 .. _indicates: http://boto3.readthedocs.org/en/latest/guide/configuration.html#shared-credentials-file
 .. _amazon: http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html
 .. _this: http://shutter-project.org/faq-help/set-shutter-as-the-default-screenshot-tool/
-
+.. _extra: https://extensions.gnome.org/extension/615/appindicator-support/
