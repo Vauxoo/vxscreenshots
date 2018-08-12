@@ -2,4 +2,4 @@
 
 __author__ = 'Vauxoo OpenSource Specialists'
 __email__ = 'nhomar@vauxoo.com'
-__version__ = '2.7.1'
+__version__ = '2.7.2'
