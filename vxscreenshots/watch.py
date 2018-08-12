@@ -13,7 +13,7 @@ from watchdog.events import LoggingEventHandler
 from .config import read_config
 from contextlib import closing
 
-__version__ = '2.7.2'
+__version__ = '2.7.3'
 
 config = read_config()
 
