@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # -*- coding: UTF-8 -*-
 
 from os import makedirs
@@ -83,7 +83,7 @@ class S3Element(LoggingEventHandler):
                                   ContentType='image/%s' % ext[1:])
                 self.url = self.get_url(fname)
                 self.logger.info("Screenshot was pushed to %s" % self.url)
-            except Exception, e:
+            except Exception as e:
                 self.logger.warning('I could not save %s' % e)
 
 
