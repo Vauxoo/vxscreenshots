@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # -*- coding: UTF-8 -*-
 import gi
 from gi.repository import Gtk as gtk
@@ -42,7 +42,7 @@ class AppShareSmart(object):
         self.conn = sqlite3.connect(self.db)
         try:
             self.init_db()
-        except Exception, e:
+        except Exception as e:
             self.logger.warning(e)
 
     def format_logging(self, log_level='INFO'):
