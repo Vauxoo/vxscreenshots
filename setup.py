@@ -18,14 +18,14 @@ try:
     with open('requirements.txt', 'rb') as req_file:
         install_requires = [r.strip() for r in req_file.readlines()]
 except Exception as e:
-    print 'Are you testing? %s' % e
+    print('Are you testing? %s' % e)
 
 test_requirements = []
 try:
     with open('requirements_dev.txt', 'rb') as req_file:
         test_requirements = [r.strip() for r in req_file.readlines()]
 except Exception as e:
-    print 'Are you testing? %s ' % e
+    print('Are you testing? %s ' % e)
 
 setup(
     name='vxscreenshots',
