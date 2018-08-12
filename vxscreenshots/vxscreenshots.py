@@ -20,7 +20,7 @@ from .config import read_config
 from .configure import Configure
 from contextlib import closing
 
-__version__ = '2.6.20'
+__version__ = '2.7.0'
 
 gi.require_version('Gtk', '3.0')
 config = read_config()
